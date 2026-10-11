@@ -87,9 +87,15 @@ ileride migrasyon gerekirse `wheels_v2` eklenir, eski anahtar okunup dönüştü
 
 - **Çark çizimi**: `CustomPainter` — dilimler eşit açılı, 12 renkli küratörlü paletten döngüsel renk;
   dilim içi metin yarıçapa göre döndürülür, uzun metin `ellipsis`. Merkez göbek, dış halka, hafif gölge.
-- **Dönüş**: `AnimationController` + `CurvedAnimation(Curves.easeOutQuart)`, 5 sn varsayılan.
-  Toplam dönüş = 5-8 tam tur + hedef açı; hedef açı `spin_math` içinde `Random.secure()` ile hesaplanır
-  (sonuç önceden kestirilemez).
+- **Dönüş**: `AnimationController` + **`FrictionCurve`** (kendi eğrimiz), 5 sn varsayılan.
+  Hız profili: ilk %8'de duruştan tepe hıza yumuşak hızlanma → sürtünmeyle (`(1-u)^1.4`)
+  dönüşün tamamına yayılan yavaşlama → son %18'de hedefin ~0.02 rad ötesine geçip geri
+  oturma. Toplam dönüş = 3-5 tam tur + hedef açı; hedef açı `spin_math` içinde
+  `Random.secure()` ile hesaplanır (sonuç önceden kestirilemez).
+  *Neden `easeOutQuart` değil:* o eğri hızı ilk karede tepeye çıkarıp ilk saniyede bitiriyor,
+  kalan 4 saniyede çark ölü gibi sürünüyordu — "bir anda durdu" hissi. Ölçüm: son %20'lik
+  zaman diliminde alınan yol `easeOutQuart` ile %0.88, `FrictionCurve` ile %2.32 (2.6x).
+  Hız tablosu (4 tur / 5 sn / 8 dilim): 660 → 559 → 464 → 374 → 290 → 212 → 142 → 80 → 0 °/sn.
 - **İbre geçişi**: animasyon dinleyicisi dilim sınırını geçtiğinde tik sesi + `HapticFeedback.selectionClick()`.
 - **Kazanan anı**: kısa parlama + dilim vurgusu + konfeti katmanı (saf Dart `CustomPainter`,
   harici ağır paket yok), sonra `WinnerSheet`.

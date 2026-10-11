@@ -12,8 +12,10 @@ Ekran görüntüleri: `docs/ekranlar/`.
 - **M1 — İskelet ve çark listesi (tamam)**: tema, veri modeli, kalıcılık, durum yönetimi,
   çark listesi ekranı (oluştur / yeniden adlandır / çoğalt / sil), hazır şablonlar.
 - **M2 — Çark ve dönüş (tamam)**: `CustomPainter` çark (12 renkli palet, radyal yazılar),
-  sabit ibre, 5 sn'lik yavaşlayan dönüş (`easeOutQuart`, 5-8 tam tur), dilim sınırında
-  tik sesi + titreşim, konfetili kazanan kartı, eleme modu. **57 test**, analyze temiz.
+  sabit ibre, **sürtünme eğrisiyle gerçekçi dönüş** (`FrictionCurve`: kısa hızlanma →
+  dönüşün tamamına yayılan yavaşlama → hedefin az ötesine geçip yerine oturma; 3-5 tur),
+  dilim sınırında tik sesi + titreşim, konfetili kazanan kartı, eleme modu. **81 test**,
+  analyze temiz.
 - **M3 — Dilim editörü ve ayarlar (tamam)**: sürükle-sırala, satır düzenleme, silme,
   toplu yapıştırma (her satır bir seçenek), "en az 2 / 24 üstü / yinelenen" uyarıları,
   kaydedilmemiş değişiklik onayı; ayarlar sayfası (eleme modu, dönüş süresi, tik sesi,

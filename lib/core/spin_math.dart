@@ -53,8 +53,9 @@ class SpinMath {
     return random.nextInt(segmentCount);
   }
 
-  /// Kaç tam tur atacağı (5-8 arası): sonucun hissini belirler.
-  static int randomFullTurns(math.Random random, {int min = 5, int max = 8}) {
+  /// Kaç tam tur atacağı. Gerçekçi görünmesi için 3-5 tur: daha az tur + yavaş
+  /// yavaş azalan hız, çarkın dilimleri tek tek geçtiğini gözle görmeni sağlar.
+  static int randomFullTurns(math.Random random, {int min = 3, int max = 5}) {
     return min + random.nextInt(max - min + 1);
   }
 

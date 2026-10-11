@@ -3,14 +3,17 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../core/feedback.dart';
+import '../core/friction_curve.dart';
 import '../core/spin_math.dart';
 import '../theme/palette.dart';
 
 /// Döndürülebilir çark.
 ///
-/// İbre üstte sabittir; çark saat yönünde hızlanıp yavaşlayarak (`easeOutQuart`)
-/// durur. Kazanan `SpinMath` ile hesaplanır, animasyon sadece o açıya gider —
-/// yani sonuç önceden belirlenmiş olsa da gözle kestirilemez.
+/// İbre üstte sabittir; çark elle çevrilmiş gibi davranır: kısa bir hızlanma,
+/// dönüşün tamamına yayılan sürtünmeli yavaşlama ve hedefin az ötesine geçip
+/// yerine oturan bir duruş (`FrictionCurve`). Kazanan `SpinMath` ile hesaplanır,
+/// animasyon sadece o açıya gider — sonuç önceden belirlenmiş olsa da gözle
+/// kestirilemez.
 ///
 /// Performans: çark ve dilim yazıları bir kez çizilir, dönüş `Transform.rotate`
 /// ile uygulanır; animasyon sırasında yeniden çizim (repaint) yapılmaz.
@@ -51,6 +54,7 @@ class SpinWheelState extends State<SpinWheel>
   late final math.Random _random = widget.random ?? math.Random.secure();
 
   Tween<double>? _tween;
+  Curve _curve = Curves.linear;
   double _rotation = 0;
   bool _spinning = false;
   int? _lastTickIndex;
@@ -73,8 +77,27 @@ class SpinWheelState extends State<SpinWheel>
     super.dispose();
   }
 
-  double get _displayRotation =>
-      _tween == null ? _rotation : _tween!.transform(_controller.value);
+  /// Yerine oturma için hedefin ötesine geçilen açı (radyan). Çark diliminin
+  /// kenarına taşmayacak kadar küçük: sonuç her zaman doğru dilimde kalır.
+  static const double _settleRadians = 0.02;
+
+  /// Dönüş boyunca hız profili: hızlanma → sürtünmeli yavaşlama → yerine oturma.
+  /// Yerine oturma miktarı toplam yola göre normalize edilir.
+  Curve _curveFor(double distance) {
+    if (distance <= 0) return Curves.linear;
+    return FrictionCurve(
+      settleOvershoot: (_settleRadians / distance).clamp(0.0, 0.004),
+    );
+  }
+
+  /// Verilen animasyon değerinde çarkın açısı (eğri uygulanmış).
+  double _rotationAt(double controllerValue) {
+    final Tween<double>? tween = _tween;
+    if (tween == null) return _rotation;
+    return tween.transform(_curve.transform(controllerValue));
+  }
+
+  double get _displayRotation => _rotationAt(_controller.value);
 
   /// Çarkı döndürür ve bitince `onResult` ile kazananın indeksini bildirir.
   void spin() {
@@ -92,6 +115,7 @@ class SpinWheelState extends State<SpinWheel>
     );
 
     _tween = Tween<double>(begin: from, end: target);
+    _curve = _curveFor(target - from);
     _lastTickIndex = SpinMath.indexAtRotation(from, count);
     _spinning = true;
     _controller.duration = widget.duration;
@@ -115,7 +139,7 @@ class SpinWheelState extends State<SpinWheel>
     if (tween == null || !_spinning) return;
 
     final int index = SpinMath.indexAtRotation(
-      tween.transform(_controller.value),
+      _rotationAt(_controller.value),
       widget.segments.length,
     );
     if (index == _lastTickIndex) return;

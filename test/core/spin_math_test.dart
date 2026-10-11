@@ -133,15 +133,15 @@ void main() {
       }
     });
 
-    test('tam tur sayısı 5-8 arasında kalır', () {
+    test('tam tur sayısı 3-5 arasında kalır', () {
       final math.Random random = math.Random(99);
       final Set<int> seen = <int>{};
       for (int i = 0; i < 500; i++) {
         final int turns = SpinMath.randomFullTurns(random);
-        expect(turns, inInclusiveRange(5, 8));
+        expect(turns, inInclusiveRange(3, 5));
         seen.add(turns);
       }
-      expect(seen, <int>{5, 6, 7, 8});
+      expect(seen, <int>{3, 4, 5});
     });
   });
 
