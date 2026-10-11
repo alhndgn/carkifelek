@@ -18,8 +18,22 @@ Ekran görüntüleri: `docs/ekranlar/`.
   toplu yapıştırma (her satır bir seçenek), "en az 2 / 24 üstü / yinelenen" uyarıları,
   kaydedilmemiş değişiklik onayı; ayarlar sayfası (eleme modu, dönüş süresi, tik sesi,
   titreşim). **70 test**, analyze temiz.
-- **M4 — Cila ve APK** (sırada): uygulama ikonu + açılış ekranı, erişilebilirlik kontrolü,
-  imzalı `flutter build apk --release` ve telefona kurulum.
+- **M4 — Cila ve APK (tamam)**: çark ikonu (`tool/icon_gen.py` ile üretilir → adaptive ikon tüm
+  yoğunluklarda), uygulama adı "Çarkıfelek", çark için ekran okuyucu etiketi,
+  `flutter build apk --release` → **`dist/carkifelek-1.0.0.apk`** (50 MB, 3 ABI, debug
+  anahtarıyla imzalı → kendi telefonuna kurulabilir).
+
+## Telefona kurulum
+
+1. `dist/carkifelek-1.0.0.apk` dosyasını telefona kopyala (USB, Drive, Telegram…).
+2. Telefonda dosyaya dokun → "bilinmeyen kaynaklardan kuruluma izin ver" → **Kur**.
+   (Play Protect'in "bilinmeyen geliştirici" uyarısı normaldir: debug anahtarıyla imzalı.)
+3. USB ile hızlı yol (Geliştirici seçenekleri + USB hata ayıklama açıkken):
+   `adb install -r dist/carkifelek-1.0.0.apk`
+
+Play Store'a çıkmak istersen: keystore üret (`keytool -genkey -v -keystore upload-keystore.jks
+-keyalg RSA -keysize 2048 -validity 10000 -alias upload`), `android/key.properties` ile imzayı
+bağla, `flutter build appbundle --release` → 25$ hesap + AAB yüklemesi.
 
 ## Geliştirme ortamı (bu makine)
 

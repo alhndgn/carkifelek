@@ -203,17 +203,25 @@ class SpinWheelState extends State<SpinWheel>
                 ),
                 AnimatedBuilder(
                   animation: _controller,
-                  builder: (BuildContext context, Widget? child) =>
-                      Transform.rotate(
-                        angle: _displayRotation,
-                        child: CustomPaint(
-                          size: Size.square(size),
-                          painter: WheelPainter(
-                            labels: _labels,
-                            segmentCount: widget.segments.length,
-                          ),
-                        ),
+                  builder: (BuildContext context, Widget? child) => Transform.rotate(
+                    angle: _displayRotation,
+                    child: CustomPaint(
+                      size: Size.square(size),
+                      painter: WheelPainter(
+                        labels: _labels,
+                        segmentCount: widget.segments.length,
                       ),
+                    ),
+                  ),
+                ),
+                // Erişilebilirlik: çark tuvale çizildiği için seçenekleri
+                // ekran okuyucuya metin olarak bildir.
+                Semantics(
+                  readOnly: true,
+                  label: widget.segments.isEmpty
+                      ? 'Boş çark'
+                      : 'Çark: ${widget.segments.join(', ')}',
+                  child: const SizedBox(width: 1, height: 1),
                 ),
                 // ibre (sabit)
                 Align(
