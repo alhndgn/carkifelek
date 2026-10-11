@@ -85,8 +85,10 @@ void main() {
     await tester.tap(find.text('Ne yesek?'));
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('Pizza'), findsWidgets);
-    expect(find.textContaining('2 seçenek'), findsWidgets);
+    // Çark ekranı açıldı: seçenekler artık çarkın üzerine çizildiği için
+    // metin olarak değil, çevir düğmesi + seçenek sayısı ile doğruluyoruz.
+    expect(find.text('ÇEVİR'), findsOneWidget);
+    expect(find.text('2 seçenek'), findsOneWidget);
   });
 
   testWidgets('uzun basınca çıkan menüden çark silinebilir', (

@@ -11,9 +11,11 @@ Ekran görüntüleri: `docs/ekranlar/`.
 
 - **M1 — İskelet ve çark listesi (tamam)**: tema, veri modeli, kalıcılık, durum yönetimi,
   çark listesi ekranı (oluştur / yeniden adlandır / çoğalt / sil), hazır şablonlar.
-  37 test geçiyor, `flutter analyze` temiz.
-- **M2 — Çark çizimi + dönüş animasyonu + sonuç ekranı** (sırada)
-- **M3** — Dilim editörü ve ayarlar (eleme modu, süre, ses, titreşim)
+- **M2 — Çark ve dönüş (tamam)**: `CustomPainter` çark (12 renkli palet, radyal yazılar),
+  sabit ibre, 5 sn'lik yavaşlayan dönüş (`easeOutQuart`, 5-8 tam tur), dilim sınırında
+  tik sesi + titreşim, konfetili kazanan kartı, eleme modu. **57 test**, analyze temiz.
+- **M3 — Dilim editörü ve ayarlar** (sırada): sürükle-sırala, toplu yapıştırma,
+  eleme modu anahtarı, dönüş süresi, ses/titreşim ayarları.
 - **M4** — Cila (ses, konfeti, ikon), imzalı APK ve telefona kurulum
 
 ## Geliştirme ortamı (bu makine)
@@ -35,7 +37,7 @@ source /c/dev/flutter-env.sh
 
 ```bash
 flutter analyze                  # statik analiz (0 hata olmalı)
-flutter test                     # 37 test
+flutter test                     # 57 test
 flutter build web --release      # hızlı görsel test için web derlemesi
 flutter run -d edge              # Edge'de canlı önizleme
 flutter build apk --release      # telefona kurulacak APK (M4)
