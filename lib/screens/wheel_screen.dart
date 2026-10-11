@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../models/wheel.dart';
 import '../state/wheel_list_provider.dart';
@@ -7,6 +8,7 @@ import '../theme/palette.dart';
 import '../theme/spacing.dart';
 import '../widgets/app_background.dart';
 import '../widgets/confetti.dart';
+import '../widgets/settings_sheet.dart';
 import '../widgets/spin_wheel.dart';
 import '../widgets/winner_sheet.dart';
 
@@ -59,15 +61,29 @@ class _WheelScreenState extends ConsumerState<WheelScreen> {
         ),
         actions: <Widget>[
           if (wheel.eliminateMode)
-            const Padding(
-              padding: EdgeInsets.only(right: Spacing.md),
-              child: Center(
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.only(right: Spacing.xs),
                 child: Text(
                   'eleme modu',
                   style: TextStyle(fontSize: 12, color: kTextSecondary),
                 ),
               ),
             ),
+          IconButton(
+            tooltip: 'Ayarlar',
+            icon: const Icon(Icons.tune),
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              builder: (BuildContext sheetContext) =>
+                  SettingsSheet(wheelId: wheel.id),
+            ),
+          ),
+          IconButton(
+            tooltip: 'Seçenekleri düzenle',
+            icon: const Icon(Icons.edit_outlined),
+            onPressed: () => context.push('/wheel/${wheel.id}/edit'),
+          ),
         ],
       ),
       body: AppBackground(
@@ -93,21 +109,32 @@ class _WheelScreenState extends ConsumerState<WheelScreen> {
                     ),
                   ),
                   if (!wheel.canSpin)
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
                         Spacing.lg,
                         0,
                         Spacing.lg,
                         Spacing.sm,
                       ),
-                      child: Text(
-                        'En az 2 seçenek gerekli.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFFF4B942),
-                        ),
+                      child: Column(
+                        children: <Widget>[
+                          const Text(
+                            'En az 2 seçenek gerekli.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFFF4B942),
+                            ),
+                          ),
+                          const SizedBox(height: Spacing.sm),
+                          FilledButton.icon(
+                            onPressed: () =>
+                                context.push('/wheel/${wheel.id}/edit'),
+                            icon: const Icon(Icons.add),
+                            label: const Text('Seçenek ekle'),
+                          ),
+                        ],
                       ),
                     ),
                   Padding(

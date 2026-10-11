@@ -13,6 +13,8 @@ class TextInputDialog extends StatefulWidget {
     required this.confirmLabel,
     this.initialValue,
     this.capitalizeSentences = true,
+    this.maxLines = 1,
+    this.minLines = 1,
   });
 
   final String title;
@@ -20,6 +22,10 @@ class TextInputDialog extends StatefulWidget {
   final String confirmLabel;
   final String? initialValue;
   final bool capitalizeSentences;
+
+  /// 1'den büyükse çok satırlı giriş (toplu ekleme) için kullanılır.
+  final int maxLines;
+  final int minLines;
 
   /// Diyaloğu açar; onaylanırsa kırpılmış metni, vazgeçilirse null döner.
   static Future<String?> show(
@@ -29,6 +35,8 @@ class TextInputDialog extends StatefulWidget {
     required String confirmLabel,
     String? initialValue,
     bool capitalizeSentences = true,
+    int maxLines = 1,
+    int minLines = 1,
   }) {
     return showDialog<String>(
       context: context,
@@ -38,6 +46,8 @@ class TextInputDialog extends StatefulWidget {
         confirmLabel: confirmLabel,
         initialValue: initialValue,
         capitalizeSentences: capitalizeSentences,
+        maxLines: maxLines,
+        minLines: minLines,
       ),
     );
   }
@@ -57,7 +67,14 @@ class _TextInputDialogState extends State<TextInputDialog> {
     super.dispose();
   }
 
-  void _submit() => Navigator.of(context).pop(_controller.text.trim());
+  void _submit() {
+    // Çok satırlı girişte satır sonu korunur; tek satırda kırpılır.
+    if (widget.maxLines > 1) {
+      Navigator.of(context).pop(_controller.text);
+      return;
+    }
+    Navigator.of(context).pop(_controller.text.trim());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +83,8 @@ class _TextInputDialogState extends State<TextInputDialog> {
       content: TextField(
         controller: _controller,
         autofocus: true,
+        maxLines: widget.maxLines,
+        minLines: widget.minLines,
         textCapitalization: widget.capitalizeSentences
             ? TextCapitalization.sentences
             : TextCapitalization.none,

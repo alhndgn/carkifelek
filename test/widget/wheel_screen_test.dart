@@ -146,6 +146,57 @@ void main() {
     expect(find.text('3 seçenek'), findsNothing);
   });
 
+  testWidgets('ayarlar: eleme modu açılınca kaydedilir ve çark ekranına yansır', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      appWith(_wheel(id: 'w1', segments: <String>['Ali', 'Doğan'])),
+    );
+
+    expect(find.text('eleme modu'), findsNothing);
+
+    await tester.tap(find.byIcon(Icons.tune));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Ayarlar'), findsOneWidget);
+    expect(find.text('Tik sesi'), findsOneWidget);
+    expect(find.text('Titreşim'), findsOneWidget);
+    expect(find.text('Dönüş süresi'), findsOneWidget);
+
+    await tester.tap(find.text('Eleme modu'));
+    await tester.pumpAndSettle();
+
+    expect(storedJson(), contains('"eliminateMode":true'));
+    expect(find.text('eleme modu'), findsOneWidget);
+
+    await tester.tap(find.text('Tik sesi'));
+    await tester.pumpAndSettle();
+    expect(storedJson(), contains('"soundOn":false'));
+  });
+
+  testWidgets('ayarlar: dönüş süresi kaydırıcısı süreyi değiştirir', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      appWith(
+        _wheel(
+          id: 'w1',
+          segments: <String>['Ali', 'Doğan'],
+          spinDurationMs: Wheel.minSpinDurationMs,
+        ),
+      ),
+    );
+
+    await tester.tap(find.byIcon(Icons.tune));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(Slider), findsOneWidget);
+    await tester.drag(find.byType(Slider), const Offset(260, 0));
+    await tester.pumpAndSettle();
+
+    expect(storedJson(), isNot(contains('"spinDurationMs":3000')));
+  });
+
   testWidgets('olmayan çark için bilgi mesajı gösterilir', (
     WidgetTester tester,
   ) async {

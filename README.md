@@ -14,9 +14,12 @@ Ekran görüntüleri: `docs/ekranlar/`.
 - **M2 — Çark ve dönüş (tamam)**: `CustomPainter` çark (12 renkli palet, radyal yazılar),
   sabit ibre, 5 sn'lik yavaşlayan dönüş (`easeOutQuart`, 5-8 tam tur), dilim sınırında
   tik sesi + titreşim, konfetili kazanan kartı, eleme modu. **57 test**, analyze temiz.
-- **M3 — Dilim editörü ve ayarlar** (sırada): sürükle-sırala, toplu yapıştırma,
-  eleme modu anahtarı, dönüş süresi, ses/titreşim ayarları.
-- **M4** — Cila (ses, konfeti, ikon), imzalı APK ve telefona kurulum
+- **M3 — Dilim editörü ve ayarlar (tamam)**: sürükle-sırala, satır düzenleme, silme,
+  toplu yapıştırma (her satır bir seçenek), "en az 2 / 24 üstü / yinelenen" uyarıları,
+  kaydedilmemiş değişiklik onayı; ayarlar sayfası (eleme modu, dönüş süresi, tik sesi,
+  titreşim). **70 test**, analyze temiz.
+- **M4 — Cila ve APK** (sırada): uygulama ikonu + açılış ekranı, erişilebilirlik kontrolü,
+  imzalı `flutter build apk --release` ve telefona kurulum.
 
 ## Geliştirme ortamı (bu makine)
 
