@@ -29,8 +29,8 @@ class WheelListScreen extends ConsumerWidget {
       floatingActionButton: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Radii.pill),
-          gradient: const LinearGradient(
-            colors: <Color>[Color(0xFF8B5CF6), Color(0xFF6D28D9)],
+          gradient: LinearGradient(
+            colors: <Color>[kAccent, kAccentAlt],
           ),
           boxShadow: <BoxShadow>[
             BoxShadow(
@@ -56,7 +56,7 @@ class WheelListScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Padding(
+              Padding(
                 padding: EdgeInsets.fromLTRB(
                   Spacing.lg,
                   Spacing.lg,
@@ -66,13 +66,29 @@ class WheelListScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      'Çarkıfelek',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w800,
-                        color: kTextPrimary,
-                      ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            'Çarkıfelek',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w800,
+                              color: kTextPrimary,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          tooltip: 'Hazır çarklar',
+                          icon: const Icon(Icons.auto_awesome_outlined),
+                          onPressed: () => context.push('/library'),
+                        ),
+                        IconButton(
+                          tooltip: 'Tema',
+                          icon: const Icon(Icons.palette_outlined),
+                          onPressed: () => context.push('/themes'),
+                        ),
+                      ],
                     ),
                     Text(
                       'Seçenekleri yaz, çarkı çevir, kararı şansa bırak.',
@@ -163,7 +179,7 @@ class WheelListScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(Spacing.md),
               child: Text(
                 wheel.title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: kTextPrimary,

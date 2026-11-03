@@ -43,7 +43,7 @@ class _WheelScreenState extends ConsumerState<WheelScreen> {
       return Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(title: const Text('Çark')),
-        body: const AppBackground(
+        body: AppBackground(
           child: Center(
             child: Text(
               'Bu çark bulunamadı.',
@@ -64,7 +64,7 @@ class _WheelScreenState extends ConsumerState<WheelScreen> {
         ),
         actions: <Widget>[
           if (wheel.eliminateMode)
-            const Center(
+            Center(
               child: Padding(
                 padding: EdgeInsets.only(right: Spacing.sm),
                 child: Text(
@@ -147,7 +147,7 @@ class _WheelScreenState extends ConsumerState<WheelScreen> {
                     ),
                     child: Text(
                       '${wheel.segments.length} seçenek',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         color: kTextSecondary,
                       ),

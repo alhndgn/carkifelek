@@ -43,14 +43,14 @@ class WinnerSheet extends StatelessWidget {
                 height: 84,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: const LinearGradient(
+                  gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: <Color>[Color(0xFF8B5CF6), Color(0xFFC24FD1)],
+                    colors: <Color>[kAccent, kAccentAlt],
                   ),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: const Color(0xFF8B5CF6).withValues(alpha: 0.4),
+                      color: kAccent.withValues(alpha: 0.4),
                       blurRadius: 28,
                       offset: const Offset(0, 6),
                     ),
@@ -64,7 +64,7 @@ class WinnerSheet extends StatelessWidget {
               ),
             ),
             const SizedBox(height: Spacing.md),
-            const Text(
+            Text(
               'KAZANAN',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -78,7 +78,7 @@ class WinnerSheet extends StatelessWidget {
             Text(
               segment,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
                 height: 1.15,
@@ -88,7 +88,7 @@ class WinnerSheet extends StatelessWidget {
             ),
             if (eliminateMode) ...<Widget>[
               const SizedBox(height: Spacing.sm),
-              const Text(
+              Text(
                 'Bu seçenek listeden çıkarıldı (eleme modu)',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 13, color: kTextSecondary),

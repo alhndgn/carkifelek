@@ -70,7 +70,7 @@ class WheelCard extends StatelessWidget {
                       wheel.title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
                         color: kTextPrimary,
@@ -80,7 +80,7 @@ class WheelCard extends StatelessWidget {
                     const SizedBox(height: Spacing.xs),
                     Text(
                       _summary,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         color: kTextSecondary,
                       ),
@@ -91,7 +91,7 @@ class WheelCard extends StatelessWidget {
                         _preview,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
                           color: kTextSecondary,
                         ),
@@ -100,7 +100,7 @@ class WheelCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: kTextSecondary),
+              Icon(Icons.chevron_right, color: kTextSecondary),
             ],
           ),
         ),

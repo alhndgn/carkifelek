@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'screens/library_screen.dart';
+import 'screens/theme_screen.dart';
 import 'screens/wheel_editor_screen.dart';
 import 'screens/wheel_list_screen.dart';
 import 'screens/wheel_screen.dart';
@@ -17,6 +19,18 @@ final Provider<GoRouter> routerProvider = Provider<GoRouter>(
         name: 'wheels',
         builder: (BuildContext context, GoRouterState state) =>
             const WheelListScreen(),
+      ),
+      GoRoute(
+        path: '/library',
+        name: 'library',
+        builder: (BuildContext context, GoRouterState state) =>
+            const LibraryScreen(),
+      ),
+      GoRoute(
+        path: '/themes',
+        name: 'themes',
+        builder: (BuildContext context, GoRouterState state) =>
+            const ThemeScreen(),
       ),
       GoRoute(
         path: '/wheel/:id',

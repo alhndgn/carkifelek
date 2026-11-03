@@ -36,7 +36,7 @@ class SettingsSheet extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            const Padding(
+            Padding(
               padding: EdgeInsets.fromLTRB(
                 Spacing.lg,
                 Spacing.lg,
@@ -95,13 +95,13 @@ class SettingsSheet extends ConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  const Text(
+                  Text(
                     'Dönüş süresi',
                     style: TextStyle(fontSize: 15, color: kTextPrimary),
                   ),
                   Text(
                     '${seconds.toStringAsFixed(1)} sn',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
                       color: kAccent,

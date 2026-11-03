@@ -63,7 +63,7 @@ class _WheelEditorScreenState extends ConsumerState<WheelEditorScreen> {
       return Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(title: const Text('Düzenle')),
-        body: const AppBackground(
+        body: AppBackground(
           child: Center(
             child: Text(
               'Bu çark bulunamadı.',
@@ -285,7 +285,7 @@ class _Header extends StatelessWidget {
             children: <Widget>[
               Text(
                 '$total seçenek',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                   color: kTextPrimary,
@@ -388,7 +388,7 @@ class _SegmentTile extends StatelessWidget {
                     text,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 16, color: kTextPrimary),
+                    style: TextStyle(fontSize: 16, color: kTextPrimary),
                   ),
                 ),
                 IconButton(
@@ -403,7 +403,7 @@ class _SegmentTile extends StatelessWidget {
                 ),
                 ReorderableDragStartListener(
                   index: index,
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: Spacing.xs),
                     child: Icon(Icons.drag_handle, color: kTextSecondary),
                   ),
@@ -478,7 +478,7 @@ class _AddBarState extends State<_AddBar> {
           if (widget.onClear != null)
             TextButton(
               onPressed: widget.onClear,
-              child: const Text(
+              child: Text(
                 'Tüm seçenekleri temizle',
                 style: TextStyle(color: kTextSecondary, fontSize: 13),
               ),

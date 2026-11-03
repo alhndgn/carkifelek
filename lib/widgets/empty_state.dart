@@ -32,14 +32,14 @@ class EmptyState extends StatelessWidget {
               height: 108,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: <Color>[Color(0xFF8B5CF6), Color(0xFF3E9BEF)],
+                  colors: <Color>[kAccent, kAccentAlt],
                 ),
                 boxShadow: <BoxShadow>[
                   BoxShadow(
-                    color: const Color(0xFF8B5CF6).withValues(alpha: 0.35),
+                    color: kAccent.withValues(alpha: 0.35),
                     blurRadius: 32,
                     offset: const Offset(0, 8),
                   ),
@@ -53,7 +53,7 @@ class EmptyState extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.lg),
-          const Text(
+          Text(
             'Henüz çarkın yok',
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -63,13 +63,13 @@ class EmptyState extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.sm),
-          const Text(
+          Text(
             'Bir şablonla başla ya da kendi seçeneklerinle sıfırdan oluştur.',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 15, color: kTextSecondary),
           ),
           const SizedBox(height: Spacing.xl),
-          const Text(
+          Text(
             'Hazır şablonlar',
             style: TextStyle(
               fontSize: 14,
@@ -133,7 +133,7 @@ class _TemplateTile extends StatelessWidget {
           ),
           child: Row(
             children: <Widget>[
-              const Icon(Icons.auto_awesome, size: 20, color: kAccent),
+              Icon(Icons.auto_awesome, size: 20, color: kAccent),
               const SizedBox(width: Spacing.sm),
               Expanded(
                 child: Column(
@@ -141,7 +141,7 @@ class _TemplateTile extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       template.title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: kTextPrimary,
@@ -149,7 +149,7 @@ class _TemplateTile extends StatelessWidget {
                     ),
                     Text(
                       '${template.segments.length} seçenek',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         color: kTextSecondary,
                       ),
@@ -157,7 +157,7 @@ class _TemplateTile extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.add_circle_outline, color: kTextSecondary),
+              Icon(Icons.add_circle_outline, color: kTextSecondary),
             ],
           ),
         ),

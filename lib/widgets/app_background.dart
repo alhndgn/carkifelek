@@ -11,7 +11,7 @@ class AppBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -27,10 +27,13 @@ class AppBackground extends StatelessWidget {
               child: Container(
                 width: 280,
                 height: 280,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
-                    colors: <Color>[Color(0x338B5CF6), Color(0x008B5CF6)],
+                    colors: <Color>[
+                      kAccent.withValues(alpha: 0.20),
+                      kAccent.withValues(alpha: 0),
+                    ],
                   ),
                 ),
               ),
@@ -43,10 +46,13 @@ class AppBackground extends StatelessWidget {
               child: Container(
                 width: 280,
                 height: 280,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
-                    colors: <Color>[Color(0x223E9BEF), Color(0x003E9BEF)],
+                    colors: <Color>[
+                      kAccentAlt.withValues(alpha: 0.18),
+                      kAccentAlt.withValues(alpha: 0),
+                    ],
                   ),
                 ),
               ),
@@ -59,10 +65,13 @@ class AppBackground extends StatelessWidget {
               child: Container(
                 width: 180,
                 height: 180,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
-                    colors: <Color>[Color(0x1A8B5CF6), Color(0x008B5CF6)],
+                    colors: <Color>[
+                      kAccent.withValues(alpha: 0.12),
+                      kAccent.withValues(alpha: 0),
+                    ],
                   ),
                 ),
               ),
