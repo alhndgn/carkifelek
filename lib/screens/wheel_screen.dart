@@ -41,7 +41,6 @@ class _WheelScreenState extends ConsumerState<WheelScreen> {
 
     if (wheel == null) {
       return Scaffold(
-        backgroundColor: Colors.transparent,
         appBar: AppBar(title: const Text('Çark')),
         body: AppBackground(
           child: Center(
@@ -55,7 +54,6 @@ class _WheelScreenState extends ConsumerState<WheelScreen> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(wheel.title),
         leading: IconButton(

@@ -33,7 +33,6 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
               .toList();
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),

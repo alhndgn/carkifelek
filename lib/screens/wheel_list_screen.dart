@@ -25,7 +25,6 @@ class WheelListScreen extends ConsumerWidget {
     final List<Wheel> wheels = ref.watch(wheelListProvider);
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       floatingActionButton: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Radii.pill),

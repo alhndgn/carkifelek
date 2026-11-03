@@ -61,7 +61,6 @@ class _WheelEditorScreenState extends ConsumerState<WheelEditorScreen> {
 
     if (wheel == null) {
       return Scaffold(
-        backgroundColor: Colors.transparent,
         appBar: AppBar(title: const Text('Düzenle')),
         body: AppBackground(
           child: Center(
@@ -77,7 +76,6 @@ class _WheelEditorScreenState extends ConsumerState<WheelEditorScreen> {
     final List<_SegmentRow> rows = _ensureRows(wheel);
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: const Text('Seçenekleri düzenle'),
         leading: IconButton(
