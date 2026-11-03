@@ -38,7 +38,10 @@ class WheelListNotifier extends Notifier<List<Wheel>> {
   Future<void> rename(String id, String title) {
     final String clean = title.trim();
     if (clean.isEmpty) return Future<void>.value();
-    return _replace(id, (Wheel w) => w.copyWith(title: clean, updatedAt: DateTime.now()));
+    return _replace(
+      id,
+      (Wheel w) => w.copyWith(title: clean, updatedAt: DateTime.now()),
+    );
   }
 
   /// Aynı seçeneklerle, listenin hemen ardına yeni bir çark ekler.

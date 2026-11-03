@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../widgets/app_sheet.dart';
+
 import 'package:go_router/go_router.dart';
 
 import '../models/wheel.dart';
@@ -63,7 +66,7 @@ class _WheelScreenState extends ConsumerState<WheelScreen> {
           if (wheel.eliminateMode)
             const Center(
               child: Padding(
-                padding: EdgeInsets.only(right: Spacing.xs),
+                padding: EdgeInsets.only(right: Spacing.sm),
                 child: Text(
                   'eleme modu',
                   style: TextStyle(fontSize: 12, color: kTextSecondary),
@@ -73,7 +76,7 @@ class _WheelScreenState extends ConsumerState<WheelScreen> {
           IconButton(
             tooltip: 'Ayarlar',
             icon: const Icon(Icons.tune),
-            onPressed: () => showModalBottomSheet<void>(
+            onPressed: () => showAppSheet<void>(
               context: context,
               builder: (BuildContext sheetContext) =>
                   SettingsSheet(wheelId: wheel.id),
@@ -98,9 +101,7 @@ class _WheelScreenState extends ConsumerState<WheelScreen> {
                       child: SpinWheel(
                         key: _wheelKey,
                         segments: wheel.segments,
-                        duration: Duration(
-                          milliseconds: wheel.spinDurationMs,
-                        ),
+                        duration: Duration(milliseconds: wheel.spinDurationMs),
                         enabled: wheel.canSpin,
                         soundOn: wheel.soundOn,
                         hapticsOn: wheel.hapticsOn,
@@ -174,7 +175,7 @@ class _WheelScreenState extends ConsumerState<WheelScreen> {
 
     setState(() => _confettiVisible = true);
 
-    final WinnerAction? action = await showModalBottomSheet<WinnerAction>(
+    final WinnerAction? action = await showAppSheet<WinnerAction>(
       context: context,
       builder: (BuildContext sheetContext) => WinnerSheet(
         segment: winner,

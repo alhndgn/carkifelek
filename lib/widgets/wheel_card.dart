@@ -32,6 +32,10 @@ class WheelCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color start = wheel.segments.isEmpty
+        ? kAccent
+        : paletteColorAt(wheel.segments.length - 1);
+
     return Material(
       color: kSurface,
       borderRadius: BorderRadius.circular(Radii.md),
@@ -44,6 +48,15 @@ class WheelCard extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Radii.md),
             border: Border.all(color: kBorder),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              stops: const <double>[0, 0.5],
+              colors: <Color>[
+                Color.alphaBlend(start.withValues(alpha: 0.12), kSurface),
+                kSurface,
+              ],
+            ),
           ),
           child: Row(
             children: <Widget>[
@@ -61,6 +74,7 @@ class WheelCard extends StatelessWidget {
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
                         color: kTextPrimary,
+                        letterSpacing: -0.2,
                       ),
                     ),
                     const SizedBox(height: Spacing.xs),

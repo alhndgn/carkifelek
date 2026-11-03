@@ -28,17 +28,26 @@ class EmptyState extends StatelessWidget {
           const SizedBox(height: Spacing.xl),
           Center(
             child: Container(
-              width: 96,
-              height: 96,
-              decoration: const BoxDecoration(
+              width: 108,
+              height: 108,
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                   colors: <Color>[Color(0xFF8B5CF6), Color(0xFF3E9BEF)],
                 ),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: const Color(0xFF8B5CF6).withValues(alpha: 0.35),
+                    blurRadius: 32,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
               ),
               child: const Icon(
                 Icons.casino_outlined,
-                size: 48,
+                size: 52,
                 color: Colors.white,
               ),
             ),
@@ -83,11 +92,12 @@ class EmptyState extends StatelessWidget {
             onPressed: onCreateEmpty,
             style: OutlinedButton.styleFrom(
               foregroundColor: kTextPrimary,
-              side: const BorderSide(color: kBorder),
-              minimumSize: const Size(0, Spacing.minTouchTarget),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Radii.sm),
+              side: BorderSide(
+                color: kBorder.withValues(alpha: 0.8),
+                width: 1.4,
               ),
+              minimumSize: const Size(0, Spacing.minTouchTarget),
+              shape: const StadiumBorder(),
             ),
             icon: const Icon(Icons.add),
             label: const Text('Sıfırdan çark oluştur'),

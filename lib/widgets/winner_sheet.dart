@@ -29,31 +29,60 @@ class WinnerSheet extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(
           Spacing.lg,
+          Spacing.xl,
           Spacing.lg,
           Spacing.lg,
-          Spacing.md,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            Center(
+              child: Container(
+                width: 84,
+                height: 84,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: <Color>[Color(0xFF8B5CF6), Color(0xFFC24FD1)],
+                  ),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: const Color(0xFF8B5CF6).withValues(alpha: 0.4),
+                      blurRadius: 28,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                ),
+                child: const Icon(
+                  Icons.emoji_events,
+                  size: 44,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            const SizedBox(height: Spacing.md),
             const Text(
-              '🎉  Kazanan',
+              'KAZANAN',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 1.1,
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 2.4,
                 color: kTextSecondary,
               ),
             ),
-            const SizedBox(height: Spacing.sm),
+            const SizedBox(height: Spacing.xs),
             Text(
               segment,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 30,
+                fontSize: 32,
                 fontWeight: FontWeight.w800,
+                height: 1.15,
+                letterSpacing: -0.4,
                 color: kTextPrimary,
               ),
             ),

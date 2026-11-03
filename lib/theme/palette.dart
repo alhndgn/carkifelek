@@ -37,6 +37,7 @@ Color paletteColorAt(int index) => kWheelPalette[index % kWheelPalette.length];
 
 /// Dilim metninin okunabilmesi için zemin koyu mu?
 bool isDarkColor(Color color) {
-  final double luminance = (0.299 * color.r + 0.587 * color.g + 0.114 * color.b);
+  final double luminance =
+      (0.299 * color.r + 0.587 * color.g + 0.114 * color.b);
   return luminance < 0.6;
 }

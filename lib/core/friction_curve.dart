@@ -44,8 +44,7 @@ class FrictionCurve extends Curve {
   double get _gainRamp => rampFraction <= 0 ? 0 : rampFraction / 2;
 
   /// Yavaşlama evresinde alınan yol.
-  double get _gainDecay =>
-      rampFraction <= 0
+  double get _gainDecay => rampFraction <= 0
       ? 1 / (decayPower + 1)
       : (1 - rampFraction) / (decayPower + 1);
 

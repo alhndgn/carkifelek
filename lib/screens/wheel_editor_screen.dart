@@ -147,7 +147,9 @@ class _WheelEditorScreenState extends ConsumerState<WheelEditorScreen> {
         context: context,
         builder: (BuildContext dialogContext) => AlertDialog(
           title: const Text('Kaydedilmeyen değişiklikler'),
-          content: const Text('Değişiklikler kaydedilmedi. Çıkmak istiyor musun?'),
+          content: const Text(
+            'Değişiklikler kaydedilmedi. Çıkmak istiyor musun?',
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
@@ -244,15 +246,15 @@ class _WheelEditorScreenState extends ConsumerState<WheelEditorScreen> {
     if (added.isEmpty) return;
 
     setState(() {
-      _rows!.addAll(
-        added.map((String text) => _SegmentRow(newId(), text)),
-      );
+      _rows!.addAll(added.map((String text) => _SegmentRow(newId(), text)));
       _dirty = true;
     });
     if (!mounted) return;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text('${added.length} seçenek eklendi')));
+      ..showSnackBar(
+        SnackBar(content: Text('${added.length} seçenek eklendi')),
+      );
   }
 }
 
@@ -386,10 +388,7 @@ class _SegmentTile extends StatelessWidget {
                     text,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: kTextPrimary,
-                    ),
+                    style: const TextStyle(fontSize: 16, color: kTextPrimary),
                   ),
                 ),
                 IconButton(

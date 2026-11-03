@@ -50,10 +50,7 @@ class Wheel {
 
   static int _clampDuration(Object? value) {
     if (value is num) {
-      return value
-          .toInt()
-          .clamp(minSpinDurationMs, maxSpinDurationMs)
-          .toInt();
+      return value.toInt().clamp(minSpinDurationMs, maxSpinDurationMs).toInt();
     }
     return defaultSpinDurationMs;
   }
@@ -108,9 +105,8 @@ class Wheel {
         : <String>[];
 
     final Object? rawUpdated = json['updatedAt'];
-    final DateTime updatedAt = (rawUpdated is String
-            ? DateTime.tryParse(rawUpdated)
-            : null) ??
+    final DateTime updatedAt =
+        (rawUpdated is String ? DateTime.tryParse(rawUpdated) : null) ??
         DateTime.now();
 
     return Wheel(

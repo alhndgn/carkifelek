@@ -227,16 +227,17 @@ class SpinWheelState extends State<SpinWheel>
                 ),
                 AnimatedBuilder(
                   animation: _controller,
-                  builder: (BuildContext context, Widget? child) => Transform.rotate(
-                    angle: _displayRotation,
-                    child: CustomPaint(
-                      size: Size.square(size),
-                      painter: WheelPainter(
-                        labels: _labels,
-                        segmentCount: widget.segments.length,
+                  builder: (BuildContext context, Widget? child) =>
+                      Transform.rotate(
+                        angle: _displayRotation,
+                        child: CustomPaint(
+                          size: Size.square(size),
+                          painter: WheelPainter(
+                            labels: _labels,
+                            segmentCount: widget.segments.length,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
                 ),
                 // Erişilebilirlik: çark tuvale çizildiği için seçenekleri
                 // ekran okuyucuya metin olarak bildir.
@@ -393,10 +394,7 @@ class WheelPainter extends CustomPainter {
         canvas.save();
         canvas.translate(position.dx, position.dy);
         canvas.rotate(angle + math.pi / 2);
-        label.paint(
-          canvas,
-          Offset(-label.width / 2, -label.height / 2),
-        );
+        label.paint(canvas, Offset(-label.width / 2, -label.height / 2));
         canvas.restore();
       }
     }
@@ -422,8 +420,7 @@ class WheelPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(WheelPainter oldDelegate) =>
-      oldDelegate.segmentCount != segmentCount ||
-      oldDelegate.labels != labels;
+      oldDelegate.segmentCount != segmentCount || oldDelegate.labels != labels;
 }
 
 /// Üstteki sabit ibre (aşağı bakan üçgen + halka).

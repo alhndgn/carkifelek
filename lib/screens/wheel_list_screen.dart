@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../widgets/app_sheet.dart';
+
 import 'package:go_router/go_router.dart';
 
 import '../core/templates.dart';
@@ -23,12 +26,30 @@ class WheelListScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showCreateDialog(context, ref),
-        backgroundColor: kAccent,
-        foregroundColor: Colors.white,
-        icon: const Icon(Icons.add),
-        label: const Text('Yeni Çark'),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(Radii.pill),
+          gradient: const LinearGradient(
+            colors: <Color>[Color(0xFF8B5CF6), Color(0xFF6D28D9)],
+          ),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: kAccent.withValues(alpha: 0.45),
+              blurRadius: 18,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: FloatingActionButton.extended(
+          onPressed: () => _showCreateDialog(context, ref),
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          highlightElevation: 0,
+          shape: const StadiumBorder(),
+          icon: const Icon(Icons.add),
+          label: const Text('Yeni Çark'),
+        ),
       ),
       body: AppBackground(
         child: SafeArea(
@@ -117,10 +138,12 @@ class WheelListScreen extends ConsumerWidget {
     );
     if (title == null || !context.mounted) return;
 
-    await ref.read(wheelListProvider.notifier).create(
-      title: title,
-      segments: const <String>['Seçenek 1', 'Seçenek 2'],
-    );
+    await ref
+        .read(wheelListProvider.notifier)
+        .create(
+          title: title,
+          segments: const <String>['Seçenek 1', 'Seçenek 2'],
+        );
     if (!context.mounted) return;
     _toast(context, 'Çark oluşturuldu — seçenekleri düzenlemeyi unutma');
   }
@@ -130,7 +153,7 @@ class WheelListScreen extends ConsumerWidget {
     WidgetRef ref,
     Wheel wheel,
   ) async {
-    await showModalBottomSheet<void>(
+    await showAppSheet<void>(
       context: context,
       builder: (BuildContext sheetContext) => SafeArea(
         child: Column(
@@ -165,7 +188,10 @@ class WheelListScreen extends ConsumerWidget {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.delete_outline, color: Color(0xFFE94F6B)),
+              leading: const Icon(
+                Icons.delete_outline,
+                color: Color(0xFFE94F6B),
+              ),
               title: const Text('Sil'),
               onTap: () {
                 Navigator.of(sheetContext).pop();
@@ -179,11 +205,7 @@ class WheelListScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _rename(
-    BuildContext context,
-    WidgetRef ref,
-    Wheel wheel,
-  ) async {
+  Future<void> _rename(BuildContext context, WidgetRef ref, Wheel wheel) async {
     final String? title = await TextInputDialog.show(
       context,
       title: 'Yeniden adlandır',
@@ -229,6 +251,15 @@ class WheelListScreen extends ConsumerWidget {
   void _toast(BuildContext context, String message) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(message)));
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message),
+          duration: const Duration(seconds: 3),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      );
   }
 }

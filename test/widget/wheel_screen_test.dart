@@ -66,7 +66,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Hiçbir sonuç kartı açılmamalı.
-    expect(find.text('🎉  Kazanan'), findsNothing);
+    expect(find.text('KAZANAN'), findsNothing);
   });
 
   testWidgets('çevirince çark döner, kazanan kartı açılır', (
@@ -84,7 +84,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('🎉  Kazanan'), findsOneWidget);
+    expect(find.text('KAZANAN'), findsOneWidget);
     final bool aliShown = find.text('Ali').evaluate().isNotEmpty;
     final bool doganShown = find.text('Doğan').evaluate().isNotEmpty;
     expect(aliShown || doganShown, isTrue);
@@ -92,7 +92,7 @@ void main() {
 
     await tester.tap(find.text('Tamam'));
     await tester.pumpAndSettle();
-    expect(find.text('🎉  Kazanan'), findsNothing);
+    expect(find.text('KAZANAN'), findsNothing);
   });
 
   testWidgets('eleme modunda kazanan listeden çıkar ve çark kilitlenir', (
