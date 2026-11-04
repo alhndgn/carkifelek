@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/wheel.dart';
+import '../models/wheel_style.dart';
 import '../state/wheel_list_provider.dart';
 import '../theme/palette.dart';
 import '../theme/spacing.dart';
@@ -50,6 +51,55 @@ class SettingsSheet extends ConsumerWidget {
                   fontWeight: FontWeight.w700,
                   color: kTextPrimary,
                 ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                Spacing.lg,
+                0,
+                Spacing.lg,
+                Spacing.sm,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Çark görünümü',
+                    style: TextStyle(fontSize: 15, color: kTextPrimary),
+                  ),
+                  const SizedBox(height: Spacing.xs),
+                  Wrap(
+                    spacing: Spacing.xs,
+                    runSpacing: Spacing.xs,
+                    children: <Widget>[
+                      for (final WheelStyle style in WheelStyle.values)
+                        ChoiceChip(
+                          label: Text(style.label),
+                          selected: wheel.style == style,
+                          showCheckmark: false,
+                          selectedColor: kAccent.withValues(alpha: 0.22),
+                          backgroundColor: kSurface,
+                          labelStyle: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: wheel.style == style
+                                ? kAccent
+                                : kTextSecondary,
+                          ),
+                          side: BorderSide(
+                            color: wheel.style == style ? kAccent : kBorder,
+                          ),
+                          onSelected: (_) =>
+                              notifier.updateSettings(wheelId, style: style),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: Spacing.xs),
+                  Text(
+                    wheel.style.description,
+                    style: TextStyle(fontSize: 12, color: kTextSecondary),
+                  ),
+                ],
               ),
             ),
             SwitchListTile(

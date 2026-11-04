@@ -1,4 +1,5 @@
 import '../core/ids.dart';
+import 'wheel_style.dart';
 
 /// Tek bir çark: başlık, seçenekler ve çarka özel ayarlar.
 /// Saf Dart — Flutter ve kalıcılık bağımlılığı yok, bu yüzden unit test kolay.
@@ -12,6 +13,7 @@ class Wheel {
     this.spinDurationMs = defaultSpinDurationMs,
     this.soundOn = true,
     this.hapticsOn = true,
+    this.style = WheelStyle.classic,
   });
 
   final String id;
@@ -21,6 +23,7 @@ class Wheel {
   final int spinDurationMs;
   final bool soundOn;
   final bool hapticsOn;
+  final WheelStyle style;
   final DateTime updatedAt;
 
   /// Çarkın dönebilmesi için gereken en az seçenek sayısı.
@@ -62,6 +65,7 @@ class Wheel {
     int? spinDurationMs,
     bool? soundOn,
     bool? hapticsOn,
+    WheelStyle? style,
     DateTime? updatedAt,
   }) {
     return Wheel(
@@ -72,6 +76,7 @@ class Wheel {
       spinDurationMs: spinDurationMs ?? this.spinDurationMs,
       soundOn: soundOn ?? this.soundOn,
       hapticsOn: hapticsOn ?? this.hapticsOn,
+      style: style ?? this.style,
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
@@ -84,6 +89,7 @@ class Wheel {
     'spinDurationMs': spinDurationMs,
     'soundOn': soundOn,
     'hapticsOn': hapticsOn,
+    'style': style.id,
     'updatedAt': updatedAt.toIso8601String(),
   };
 
@@ -117,6 +123,7 @@ class Wheel {
       spinDurationMs: _clampDuration(json['spinDurationMs']),
       soundOn: json['soundOn'] != false,
       hapticsOn: json['hapticsOn'] != false,
+      style: WheelStyle.fromId(json['style']),
       updatedAt: updatedAt,
     );
   }

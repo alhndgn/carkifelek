@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/ids.dart';
 import '../data/wheel_repository.dart';
 import '../models/wheel.dart';
+import '../models/wheel_style.dart';
 import 'app_providers.dart';
 
 /// Çarkların listesi: oluşturma, düzenleme, silme ve eleme modu mantığı.
@@ -92,6 +93,7 @@ class WheelListNotifier extends Notifier<List<Wheel>> {
     int? spinDurationMs,
     bool? soundOn,
     bool? hapticsOn,
+    WheelStyle? style,
   }) {
     return _replace(
       id,
@@ -100,6 +102,7 @@ class WheelListNotifier extends Notifier<List<Wheel>> {
         spinDurationMs: spinDurationMs,
         soundOn: soundOn,
         hapticsOn: hapticsOn,
+        style: style,
         updatedAt: DateTime.now(),
       ),
     );

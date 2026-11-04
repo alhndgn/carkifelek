@@ -99,6 +99,7 @@ class _WheelScreenState extends ConsumerState<WheelScreen> {
                       child: SpinWheel(
                         key: _wheelKey,
                         segments: wheel.segments,
+                        style: wheel.style,
                         duration: Duration(milliseconds: wheel.spinDurationMs),
                         enabled: wheel.canSpin,
                         soundOn: wheel.soundOn,

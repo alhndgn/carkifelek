@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../core/feedback.dart';
 import '../core/friction_curve.dart';
 import '../core/spin_math.dart';
+import '../models/wheel_style.dart';
 import '../theme/palette.dart';
 
 /// Döndürülebilir çark.
@@ -28,6 +29,7 @@ class SpinWheel extends StatefulWidget {
     this.hapticsOn = true,
     this.random,
     this.hubLabel = 'ÇEVİR',
+    this.style = WheelStyle.classic,
   });
 
   final List<String> segments;
@@ -36,6 +38,9 @@ class SpinWheel extends StatefulWidget {
   final bool enabled;
   final bool soundOn;
   final bool hapticsOn;
+
+  /// Çarkın görünümü (klasik / halka / hedef / ibre).
+  final WheelStyle style;
 
   /// Testlerde sabit seed verilir; uygulamada `Random.secure()` kullanılır.
   final math.Random? random;
@@ -64,10 +69,25 @@ class SpinWheelState extends State<SpinWheel>
 
   bool get isSpinning => _spinning;
 
+  /// Dururken ibre dilim sınırına değil, dilimin ortasına denk gelsin.
+  /// Çark 0 radyanda dilim sınırındadır (matematik bunu böyle varsayar);
+  /// yarım dilim kadar döndürünce ilk dilim tam ortalanır.
+  double get _restRotation =>
+      widget.segments.isEmpty ? 0 : math.pi / widget.segments.length;
+
   @override
   void initState() {
     super.initState();
+    _rotation = _restRotation;
     _controller.addListener(_handleFrame);
+  }
+
+  @override
+  void didUpdateWidget(covariant SpinWheel oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!_spinning && widget.segments.length != oldWidget.segments.length) {
+      _rotation = _restRotation;
+    }
   }
 
   @override
@@ -151,19 +171,29 @@ class SpinWheelState extends State<SpinWheel>
   void _ensureLabels(double radius) {
     final List<String> segments = widget.segments;
     final String key =
-        '${radius.toStringAsFixed(1)}|${segments.length}|${segments.join('¦')}';
+        '${radius.toStringAsFixed(1)}|${segments.length}|'
+        '${segments.join('¦')}|${widget.style.id}';
     if (key == _labelKey) return;
     _labelKey = key;
 
     final int count = segments.length;
-    final double fontSize = count <= 6
+    final double baseSize = count <= 6
         ? 15
         : count <= 12
         ? 13
         : count <= 18
         ? 11.5
         : 10;
-    final double maxWidth = math.max(36, radius * 0.58);
+
+    // Dar halkalarda yazı hem küçülür hem kısalır.
+    final (double widthFactor, double sizeFactor) = switch (widget.style) {
+      WheelStyle.classic => (0.58, 1.0),
+      WheelStyle.donut => (0.42, 0.92),
+      WheelStyle.target => (0.30, 0.82),
+      WheelStyle.needle => (0.32, 0.86),
+    };
+    final double fontSize = baseSize * sizeFactor;
+    final double maxWidth = math.max(24, radius * widthFactor);
 
     _labels = segments
         .map(
@@ -235,6 +265,7 @@ class SpinWheelState extends State<SpinWheel>
                           painter: WheelPainter(
                             labels: _labels,
                             segmentCount: widget.segments.length,
+                            style: widget.style,
                           ),
                         ),
                       ),
@@ -349,57 +380,244 @@ class _HubButton extends StatelessWidget {
   }
 }
 
-/// Çark dilimlerini ve halkasını çizen ressam. Dönüş uygulanmaz (bkz. `Transform.rotate`).
+/// Çark dilimlerini çizen ressam. Dönüş uygulanmaz (bkz. `Transform.rotate`).
+///
+/// Dört görünüm de aynı geometriyi kullanır: 0 radyan üsttür ve saat yönünde
+/// artar, böylece sabit ibre her stilde aynı dilimi gösterir.
 class WheelPainter extends CustomPainter {
-  WheelPainter({required this.labels, required this.segmentCount});
+  WheelPainter({
+    required this.labels,
+    required this.segmentCount,
+    this.style = WheelStyle.classic,
+  });
 
   final List<TextPainter> labels;
   final int segmentCount;
+  final WheelStyle style;
+
+  static const Color _divider = Color(0x33FFFFFF);
+
+  /// Etiketlerin yarıçapa göre yerleştiği oran (görünüme göre).
+  double get _labelFraction => switch (style) {
+    WheelStyle.classic => 0.62,
+    WheelStyle.donut => 0.81,
+    WheelStyle.target => 0.89,
+    WheelStyle.needle => 0.845,
+  };
 
   @override
   void paint(Canvas canvas, Size size) {
     final Offset center = size.center(Offset.zero);
     final double radius = size.shortestSide / 2 * 0.92;
-    final Rect rect = Rect.fromCircle(center: center, radius: radius);
 
     if (segmentCount < 1) {
-      canvas.drawCircle(rect.center, radius, Paint()..color = kSurface);
+      canvas.drawCircle(center, radius, Paint()..color = kSurface);
       return;
     }
 
-    final double sweep = SpinMath.sweep(segmentCount);
-    for (int i = 0; i < segmentCount; i++) {
-      // 0 radyan = üst (ibre yönü); saat yönünde artar → canvas açısı -π/2 + açı
-      final double start = -math.pi / 2 + i * sweep;
-      final Paint paint = Paint()
-        ..style = PaintingStyle.fill
-        ..isAntiAlias = true
-        ..color = paletteColorAt(i);
-      canvas.drawArc(rect, start, sweep, true, paint);
-
-      // dilim arası ince ayırıcı
-      final Paint divider = Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.2
-        ..color = const Color(0x33FFFFFF);
-      canvas.drawArc(rect, start, sweep, true, divider);
-
-      final TextPainter? label = i < labels.length ? labels[i] : null;
-      if (label != null) {
-        final double angle = start + sweep / 2;
-        final Offset position = Offset(
-          center.dx + math.cos(angle) * radius * 0.62,
-          center.dy + math.sin(angle) * radius * 0.62,
-        );
-        canvas.save();
-        canvas.translate(position.dx, position.dy);
-        canvas.rotate(angle + math.pi / 2);
-        label.paint(canvas, Offset(-label.width / 2, -label.height / 2));
-        canvas.restore();
-      }
+    switch (style) {
+      case WheelStyle.classic:
+        _paintClassic(canvas, center, radius);
+      case WheelStyle.donut:
+        _paintDonut(canvas, center, radius);
+      case WheelStyle.target:
+        _paintTarget(canvas, center, radius);
+      case WheelStyle.needle:
+        _paintNeedle(canvas, center, radius);
     }
 
-    // dış halka
+    _paintRim(canvas, center, radius);
+    _paintLabels(canvas, center, radius);
+  }
+
+  double get _sweep => SpinMath.sweep(segmentCount);
+
+  double _startOf(int i) => -math.pi / 2 + i * _sweep;
+
+  /// Halka dilimi (donut / hedef / ibre için).
+  Path _annulus(
+    Offset center,
+    double outer,
+    double inner,
+    double start,
+    double sweep,
+  ) {
+    return Path()
+      ..arcTo(Rect.fromCircle(center: center, radius: outer), start, sweep, true)
+      ..arcTo(
+        Rect.fromCircle(center: center, radius: inner),
+        start + sweep,
+        -sweep,
+        false,
+      )
+      ..close();
+  }
+
+  void _paintClassic(Canvas canvas, Offset center, double radius) {
+    final Rect rect = Rect.fromCircle(center: center, radius: radius);
+    for (int i = 0; i < segmentCount; i++) {
+      final double start = _startOf(i);
+      canvas.drawArc(
+        rect,
+        start,
+        _sweep,
+        true,
+        Paint()
+          ..style = PaintingStyle.fill
+          ..isAntiAlias = true
+          ..color = paletteColorAt(i),
+      );
+      canvas.drawArc(
+        rect,
+        start,
+        _sweep,
+        true,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.2
+          ..color = _divider,
+      );
+    }
+  }
+
+  void _paintDonut(Canvas canvas, Offset center, double radius) {
+    final double inner = radius * 0.62;
+    for (int i = 0; i < segmentCount; i++) {
+      final Path path = _annulus(center, radius, inner, _startOf(i), _sweep);
+      canvas.drawPath(
+        path,
+        Paint()
+          ..isAntiAlias = true
+          ..color = paletteColorAt(i),
+      );
+      canvas.drawPath(
+        path,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.2
+          ..color = _divider,
+      );
+    }
+    canvas.drawCircle(
+      center,
+      inner,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 4
+        ..color = kSurfaceHigh,
+    );
+  }
+
+  void _paintTarget(Canvas canvas, Offset center, double radius) {
+    // Dıştan içe bantlar; her bant biraz daha koyulaşır (dart tahtası hissi).
+    const List<double> edges = <double>[1.0, 0.79, 0.58, 0.37];
+    for (int band = 0; band < edges.length - 1; band++) {
+      final double outer = radius * edges[band];
+      final double inner = radius * edges[band + 1];
+      for (int i = 0; i < segmentCount; i++) {
+        final Color base = paletteColorAt(i);
+        final Path path = _annulus(center, outer, inner, _startOf(i), _sweep);
+        canvas.drawPath(
+          path,
+          Paint()
+            ..isAntiAlias = true
+            ..color = Color.lerp(base, Colors.black, 0.10 * band) ?? base,
+        );
+        canvas.drawPath(
+          path,
+          Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 1
+            ..color = _divider,
+        );
+      }
+      canvas.drawCircle(
+        center,
+        inner,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.4
+          ..color = _divider,
+      );
+    }
+
+    // Göbek (bullseye)
+    canvas.drawCircle(center, radius * 0.34, Paint()..color = kSurfaceHigh);
+    canvas.drawCircle(
+      center,
+      radius * 0.30,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2
+        ..color = kAccent.withValues(alpha: 0.6),
+    );
+  }
+
+  void _paintNeedle(Canvas canvas, Offset center, double radius) {
+    final double inner = radius * 0.72;
+
+    // iç kadran
+    canvas.drawCircle(
+      center,
+      inner,
+      Paint()..color = kSurface.withValues(alpha: 0.55),
+    );
+
+    // ince çentikler (60 adet) — dönüş sırasında hareketi belli eder
+    final Paint tick = Paint()
+      ..strokeWidth = 1
+      ..color = kTextSecondary.withValues(alpha: 0.35);
+    for (int i = 0; i < 60; i++) {
+      final double a = -math.pi / 2 + i * math.pi * 2 / 60;
+      final bool major = i % 5 == 0;
+      canvas.drawLine(
+        Offset(
+          center.dx + math.cos(a) * (inner * 0.86),
+          center.dy + math.sin(a) * (inner * 0.86),
+        ),
+        Offset(
+          center.dx + math.cos(a) * (inner * (major ? 0.99 : 0.94)),
+          center.dy + math.sin(a) * (inner * (major ? 0.99 : 0.94)),
+        ),
+        tick..strokeWidth = major ? 1.6 : 1,
+      );
+    }
+
+    // dış halka dilimleri
+    for (int i = 0; i < segmentCount; i++) {
+      final Path path = _annulus(center, radius * 0.97, inner, _startOf(i), _sweep);
+      canvas.drawPath(
+        path,
+        Paint()
+          ..isAntiAlias = true
+          ..color = paletteColorAt(i),
+      );
+      canvas.drawPath(
+        path,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.2
+          ..color = _divider,
+      );
+      // dilim sınırı çentiği
+      final double a = _startOf(i);
+      canvas.drawLine(
+        Offset(
+          center.dx + math.cos(a) * inner,
+          center.dy + math.sin(a) * inner,
+        ),
+        Offset(
+          center.dx + math.cos(a) * radius * 0.97,
+          center.dy + math.sin(a) * radius * 0.97,
+        ),
+        Paint()
+          ..strokeWidth = 1.6
+          ..color = kSurfaceHigh,
+      );
+    }
+  }
+
+  void _paintRim(Canvas canvas, Offset center, double radius) {
     canvas.drawCircle(
       center,
       radius,
@@ -418,9 +636,29 @@ class WheelPainter extends CustomPainter {
     );
   }
 
+  void _paintLabels(Canvas canvas, Offset center, double radius) {
+    final double at = radius * _labelFraction;
+    for (int i = 0; i < segmentCount; i++) {
+      final TextPainter? label = i < labels.length ? labels[i] : null;
+      if (label == null) continue;
+      final double angle = _startOf(i) + _sweep / 2;
+      final Offset position = Offset(
+        center.dx + math.cos(angle) * at,
+        center.dy + math.sin(angle) * at,
+      );
+      canvas.save();
+      canvas.translate(position.dx, position.dy);
+      canvas.rotate(angle + math.pi / 2);
+      label.paint(canvas, Offset(-label.width / 2, -label.height / 2));
+      canvas.restore();
+    }
+  }
+
   @override
   bool shouldRepaint(WheelPainter oldDelegate) =>
-      oldDelegate.segmentCount != segmentCount || oldDelegate.labels != labels;
+      oldDelegate.segmentCount != segmentCount ||
+      oldDelegate.labels != labels ||
+      oldDelegate.style != style;
 }
 
 /// Üstteki sabit ibre (aşağı bakan üçgen + halka).
