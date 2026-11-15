@@ -45,7 +45,7 @@ cmd = [
     '-validity', '10000',
     '-storepass:env', 'CARKPASS',
     '-keypass:env', 'CARKPASS',
-    '-dname', 'CN=Carkifelek, OU=Mobile, O=Ezforme, L=Istanbul, ST=Istanbul, C=TR',
+    '-dname', 'CN=Teq Studio, OU=Mobile, O=Teq Studio, L=Istanbul, ST=Istanbul, C=TR',
 ]
 r = subprocess.run(cmd, capture_output=True, text=True, env=env)
 print('  keytool cikis kodu:', r.returncode)

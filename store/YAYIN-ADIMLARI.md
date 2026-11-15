@@ -1,6 +1,6 @@
 # Çarkıfelek — Google Play yayın adımları
 
-Paket: `com.ezforme.carkifelek` · Sürüm: **1.2.0 (versionCode 3)** · minSdk 24 · targetSdk 36
+Paket: `com.teqstudio.carkifelek` · Sürüm: **1.2.0 (versionCode 3)** · minSdk 24 · targetSdk 36
 Yüklenecek dosya: **`store/carkifelek-1.2.0.aab`** (AAB — Play APK kabul etmez)
 İmza: upload anahtarı (CN=Carkifelek) ✅ — debug imzalı değil
 
@@ -126,7 +126,7 @@ sıkıldığında aç; çark karar versin.
 ## Teknik doğrulama (yapıldı)
 
 ```
-Paket          : com.ezforme.carkifelek
+Paket          : com.teqstudio.carkifelek
 versionCode    : 3      versionName: 1.2.0
 minSdk / target: 24 / 36          (Play 2026 için 35+ istiyor → uygun)
 İmza           : CN=Carkifelek (upload anahtarı) — debug değil

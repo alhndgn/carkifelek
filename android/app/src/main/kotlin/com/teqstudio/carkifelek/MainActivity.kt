@@ -1,4 +1,4 @@
-package com.ezforme.carkifelek
+package com.teqstudio.carkifelek
 
 import io.flutter.embedding.android.FlutterActivity
 
