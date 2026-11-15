@@ -127,7 +127,9 @@ class AppTheme {
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith((Set<WidgetState> s) {
-          return s.contains(WidgetState.selected) ? Colors.white : p.textSecondary;
+          return s.contains(WidgetState.selected)
+              ? Colors.white
+              : p.textSecondary;
         }),
         trackColor: WidgetStateProperty.resolveWith((Set<WidgetState> s) {
           return s.contains(WidgetState.selected) ? p.accent : p.border;

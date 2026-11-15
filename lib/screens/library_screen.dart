@@ -144,7 +144,8 @@ class _LibraryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       button: true,
-      label: '${entry.title}, ${entry.segments.length} seçenek'
+      label:
+          '${entry.title}, ${entry.segments.length} seçenek'
           '${added ? ', eklendi' : ''}',
       child: InkWell(
         onTap: onTap,

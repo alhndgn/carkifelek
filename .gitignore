@@ -48,3 +48,6 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Yayin artefaktlari (buyuk ikili dosyalar)
+store/*.aab

@@ -28,9 +28,7 @@ class WheelListScreen extends ConsumerWidget {
       floatingActionButton: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Radii.pill),
-          gradient: LinearGradient(
-            colors: <Color>[kAccent, kAccentAlt],
-          ),
+          gradient: LinearGradient(colors: <Color>[kAccent, kAccentAlt]),
           boxShadow: <BoxShadow>[
             BoxShadow(
               color: kAccent.withValues(alpha: 0.45),

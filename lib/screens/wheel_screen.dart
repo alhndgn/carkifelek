@@ -146,10 +146,7 @@ class _WheelScreenState extends ConsumerState<WheelScreen> {
                     ),
                     child: Text(
                       '${wheel.segments.length} seçenek',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: kTextSecondary,
-                      ),
+                      style: TextStyle(fontSize: 14, color: kTextSecondary),
                     ),
                   ),
                 ],

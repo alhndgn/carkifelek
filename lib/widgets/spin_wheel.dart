@@ -65,6 +65,7 @@ class SpinWheelState extends State<SpinWheel>
   int? _lastTickIndex;
 
   List<TextPainter> _labels = const <TextPainter>[];
+  List<TextPainter> _labelsDark = const <TextPainter>[];
   String _labelKey = '';
 
   bool get isSpinning => _spinning;
@@ -195,7 +196,7 @@ class SpinWheelState extends State<SpinWheel>
     final double fontSize = baseSize * sizeFactor;
     final double maxWidth = math.max(24, radius * widthFactor);
 
-    _labels = segments
+    List<TextPainter> build(Color color, List<Shadow>? shadows) => segments
         .map(
           (String segment) => TextPainter(
             text: TextSpan(
@@ -203,10 +204,8 @@ class SpinWheelState extends State<SpinWheel>
               style: TextStyle(
                 fontSize: fontSize,
                 fontWeight: FontWeight.w700,
-                color: Colors.white,
-                shadows: const <Shadow>[
-                  Shadow(blurRadius: 3, color: Color(0x8C000000)),
-                ],
+                color: color,
+                shadows: shadows,
               ),
             ),
             textDirection: TextDirection.ltr,
@@ -216,6 +215,12 @@ class SpinWheelState extends State<SpinWheel>
           )..layout(maxWidth: maxWidth),
         )
         .toList();
+
+    // Açık dilimlerde koyu, koyu dilimlerde beyaz yazı → her dilimde okunur.
+    _labels = build(Colors.white, const <Shadow>[
+      Shadow(blurRadius: 3, color: Color(0x8C000000)),
+    ]);
+    _labelsDark = build(const Color(0xFF17131F), null);
   }
 
   @override
@@ -264,6 +269,7 @@ class SpinWheelState extends State<SpinWheel>
                           size: Size.square(size),
                           painter: WheelPainter(
                             labels: _labels,
+                            labelsDark: _labelsDark,
                             segmentCount: widget.segments.length,
                             style: widget.style,
                           ),
@@ -388,10 +394,14 @@ class WheelPainter extends CustomPainter {
   WheelPainter({
     required this.labels,
     required this.segmentCount,
+    this.labelsDark = const <TextPainter>[],
     this.style = WheelStyle.classic,
   });
 
   final List<TextPainter> labels;
+
+  /// Açık renkli dilimler için koyu yazı seti.
+  final List<TextPainter> labelsDark;
   final int segmentCount;
   final WheelStyle style;
 
@@ -443,7 +453,12 @@ class WheelPainter extends CustomPainter {
     double sweep,
   ) {
     return Path()
-      ..arcTo(Rect.fromCircle(center: center, radius: outer), start, sweep, true)
+      ..arcTo(
+        Rect.fromCircle(center: center, radius: outer),
+        start,
+        sweep,
+        true,
+      )
       ..arcTo(
         Rect.fromCircle(center: center, radius: inner),
         start + sweep,
@@ -585,7 +600,13 @@ class WheelPainter extends CustomPainter {
 
     // dış halka dilimleri
     for (int i = 0; i < segmentCount; i++) {
-      final Path path = _annulus(center, radius * 0.97, inner, _startOf(i), _sweep);
+      final Path path = _annulus(
+        center,
+        radius * 0.97,
+        inner,
+        _startOf(i),
+        _sweep,
+      );
       canvas.drawPath(
         path,
         Paint()
@@ -639,8 +660,12 @@ class WheelPainter extends CustomPainter {
   void _paintLabels(Canvas canvas, Offset center, double radius) {
     final double at = radius * _labelFraction;
     for (int i = 0; i < segmentCount; i++) {
-      final TextPainter? label = i < labels.length ? labels[i] : null;
+      final Color slice = paletteColorAt(i);
+      // Koyu dilim → beyaz yazı, açık dilim → koyu yazı.
+      final List<TextPainter> source = isDarkColor(slice) ? labels : labelsDark;
+      final TextPainter? label = i < source.length ? source[i] : null;
       if (label == null) continue;
+
       final double angle = _startOf(i) + _sweep / 2;
       final Offset position = Offset(
         center.dx + math.cos(angle) * at,
@@ -648,7 +673,12 @@ class WheelPainter extends CustomPainter {
       );
       canvas.save();
       canvas.translate(position.dx, position.dy);
-      canvas.rotate(angle + math.pi / 2);
+
+      double rot = angle + math.pi / 2;
+      // Alt yarıdaki dilimlerde yazı baş aşağı görünür; 180° çevirip okunur yap.
+      if (math.sin(angle) > 0) rot += math.pi;
+
+      canvas.rotate(rot);
       label.paint(canvas, Offset(-label.width / 2, -label.height / 2));
       canvas.restore();
     }
@@ -658,6 +688,7 @@ class WheelPainter extends CustomPainter {
   bool shouldRepaint(WheelPainter oldDelegate) =>
       oldDelegate.segmentCount != segmentCount ||
       oldDelegate.labels != labels ||
+      oldDelegate.labelsDark != labelsDark ||
       oldDelegate.style != style;
 }
 

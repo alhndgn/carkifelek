@@ -80,10 +80,7 @@ class WheelCard extends StatelessWidget {
                     const SizedBox(height: Spacing.xs),
                     Text(
                       _summary,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: kTextSecondary,
-                      ),
+                      style: TextStyle(fontSize: 13, color: kTextSecondary),
                     ),
                     if (wheel.segments.isNotEmpty) ...<Widget>[
                       const SizedBox(height: Spacing.xs),
@@ -91,10 +88,7 @@ class WheelCard extends StatelessWidget {
                         _preview,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: kTextSecondary,
-                        ),
+                        style: TextStyle(fontSize: 13, color: kTextSecondary),
                       ),
                     ],
                   ],

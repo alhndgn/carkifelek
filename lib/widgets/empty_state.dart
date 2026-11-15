@@ -149,10 +149,7 @@ class _TemplateTile extends StatelessWidget {
                     ),
                     Text(
                       '${template.segments.length} seçenek',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: kTextSecondary,
-                      ),
+                      style: TextStyle(fontSize: 13, color: kTextSecondary),
                     ),
                   ],
                 ),

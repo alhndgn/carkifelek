@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:1024px; height:500px; overflow:hidden; }
+  body {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background: radial-gradient(circle at 22% 28%, #3b2a7a 0%, #241a4a 38%, #14102a 72%, #0d0b18 100%);
+    color:#f5f3ff; display:flex; align-items:center;
+    padding:0 64px; gap:56px; position:relative;
+  }
+  /* köşe parıltıları */
+  body::before, body::after {
+    content:""; position:absolute; border-radius:50%; pointer-events:none;
+  }
+  body::before { width:420px; height:420px; right:-120px; top:-160px;
+    background:radial-gradient(circle, rgba(139,92,246,.38), transparent 68%); }
+  body::after { width:360px; height:360px; left:280px; bottom:-200px;
+    background:radial-gradient(circle, rgba(62,155,239,.28), transparent 70%); }
+
+  .icon-wrap { position:relative; flex:0 0 auto; }
+  .icon-wrap img {
+    width:236px; height:236px; border-radius:52px; display:block;
+    box-shadow:0 26px 60px -18px rgba(139,92,246,.75), 0 0 0 1px rgba(255,255,255,.08);
+  }
+  .text { position:relative; z-index:2; min-width:0; }
+  h1 {
+    font-size:78px; font-weight:800; letter-spacing:-2.4px; line-height:1;
+    background:linear-gradient(100deg,#ffffff 0%,#e4d9ff 52%,#a78bfa 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    margin-bottom:16px;
+  }
+  p.tag {
+    font-size:29px; font-weight:600; color:#c9c2e8; line-height:1.32;
+    max-width:600px; margin-bottom:26px;
+  }
+  .dots { display:flex; gap:11px; margin-bottom:22px; }
+  .dots i { width:19px; height:19px; border-radius:50%; display:block; }
+  .chips { display:flex; gap:10px; flex-wrap:wrap; }
+  .chip {
+    font-size:19px; font-weight:700; padding:9px 17px; border-radius:999px;
+    background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.17);
+    color:#e9e4ff;
+  }
+  .chip.on { background:rgba(139,92,246,.32); border-color:#8b5cf6; }
+</style>
+</head>
+<body>
+  <div class="icon-wrap"><img src="/assets/icon/app_icon.png" alt=""></div>
+  <div class="text">
+    <h1>Çarkıfelek</h1>
+    <p class="tag">Ne yiyelim? Kim ödesin? Hangi film?<br>Çarkı çevir, kararı şansa bırak.</p>
+    <div class="dots">
+      <i style="background:#E94F6B"></i><i style="background:#F4B942"></i>
+      <i style="background:#3FBF7F"></i><i style="background:#2FB7B0"></i>
+      <i style="background:#3E9BEF"></i><i style="background:#8B5CF6"></i>
+      <i style="background:#C24FD1"></i><i style="background:#F2833F"></i>
+    </div>
+    <div class="chips">
+      <span class="chip on">66 hazır çark</span>
+      <span class="chip">4 çark görünümü</span>
+      <span class="chip">6 tema</span>
+      <span class="chip">Reklamsız</span>
+    </div>
+  </div>
+</body>
+</html>
