@@ -45,15 +45,12 @@ Tüm uygulamalar → **Uygulama oluştur**
 - **Gizlilik politikası URL'si:** zorunlu → aşağıdaki not
 
 ### Gizlilik politikası (zorunlu)
-Uygulama **hiçbir veri toplamıyor** (her şey cihazda, ağ isteği yok). Yine de bir URL
-gerekiyor. En kolayı: GitHub Gist / GitHub Pages üzerinde 1 sayfalık metin yayınla:
+Yayında, hazır:
+**https://alhndgn.github.io/carkifelek/**
 
-```
-Çarkıfelek gizlilik politikası
-Bu uygulama hiçbir kişisel veri toplamaz, sunucuya veri göndermez ve reklam göstermez.
-Çarklar, seçenekler ve ayarlar yalnızca cihazınızda saklanır; uygulamayı silerseniz silinir.
-İletişim: <e-posta adresin>
-```
+Kaynak: `docs/index.html` (repo: alhndgn/carkifelek, GitHub Pages `/docs`).
+Metin değişirse dosyayı güncelle, `git push` yeter — Pages ~1 dakikada yayınlar.
+İletişim adresi: teqstudio@hotmail.com
 
 ## 3) Uygulama içeriği (App content) — hepsi zorunlu
 
