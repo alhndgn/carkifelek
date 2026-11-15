@@ -37,10 +37,8 @@ void main() {
 
   String storedJson() => store.read(WheelRepository.storageKey) ?? '';
 
-  Finder dialogText(String text) => find.descendant(
-    of: find.byType(AlertDialog),
-    matching: find.text(text),
-  );
+  Finder dialogText(String text) =>
+      find.descendant(of: find.byType(AlertDialog), matching: find.text(text));
 
   Finder dialogField() => find.descendant(
     of: find.byType(AlertDialog),
@@ -68,7 +66,10 @@ void main() {
 
     expect(find.text('3 seçenek'), findsOneWidget);
     expect(find.text('Mehmet'), findsOneWidget);
-    expect(tester.widget<TextField>(find.byType(TextField)).controller?.text, '');
+    expect(
+      tester.widget<TextField>(find.byType(TextField)).controller?.text,
+      '',
+    );
   });
 
   testWidgets('kaydet diske yazar', (WidgetTester tester) async {

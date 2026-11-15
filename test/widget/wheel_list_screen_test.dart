@@ -14,6 +14,8 @@ Future<void> _pumpApp(WidgetTester tester) async {
     ProviderScope(
       overrides: [
         sharedPreferencesProvider.overrideWithValue(prefs),
+        // Açılış ekranını atla; testler doğrudan çark listesini görsün.
+        splashEnabledProvider.overrideWithValue(false),
       ],
       child: const CarkifelekApp(),
     ),

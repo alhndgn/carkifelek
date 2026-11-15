@@ -76,15 +76,13 @@ void main() {
         Wheel.minSpinDurationMs,
       );
       expect(
-        Wheel.fromJson(<String, dynamic>{
-          'spinDurationMs': 999999,
-        }).spinDurationMs,
+        Wheel.fromJson(<String, dynamic>{'spinDurationMs': 999999})
+            .spinDurationMs,
         Wheel.maxSpinDurationMs,
       );
       expect(
-        Wheel.fromJson(<String, dynamic>{
-          'spinDurationMs': 'yavaş',
-        }).spinDurationMs,
+        Wheel.fromJson(<String, dynamic>{'spinDurationMs': 'yavaş'})
+            .spinDurationMs,
         Wheel.defaultSpinDurationMs,
       );
     });
@@ -114,9 +112,11 @@ void main() {
       );
       expect(many.hasManySegments, isTrue);
       expect(
-        _sample().copyWith(
-          segments: List<String>.generate(24, (int i) => 'Seçenek $i'),
-        ).hasManySegments,
+        _sample()
+            .copyWith(
+              segments: List<String>.generate(24, (int i) => 'Seçenek $i'),
+            )
+            .hasManySegments,
         isFalse,
       );
     });

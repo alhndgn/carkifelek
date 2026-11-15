@@ -8,8 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 double _velocity(Curve curve, double u, {double h = 1e-4}) {
   final double lower = math.max(0.0, u - h);
   final double upper = math.min(1.0, u + h);
-  return (curve.transform(upper) - curve.transform(lower)) /
-      (upper - lower);
+  return (curve.transform(upper) - curve.transform(lower)) / (upper - lower);
 }
 
 void main() {

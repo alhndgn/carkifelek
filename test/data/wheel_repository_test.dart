@@ -38,8 +38,16 @@ void main() {
   });
 
   test('kaydedilen çarklar en son güncellenenden eskiye sıralanır', () async {
-    final Wheel older = _wheel('a', 'Eski', DateTime.parse('2026-01-01T00:00:00Z'));
-    final Wheel newer = _wheel('b', 'Yeni', DateTime.parse('2026-06-01T00:00:00Z'));
+    final Wheel older = _wheel(
+      'a',
+      'Eski',
+      DateTime.parse('2026-01-01T00:00:00Z'),
+    );
+    final Wheel newer = _wheel(
+      'b',
+      'Yeni',
+      DateTime.parse('2026-06-01T00:00:00Z'),
+    );
 
     await repository.saveAll(<Wheel>[older, newer]);
 
@@ -64,7 +72,11 @@ void main() {
   });
 
   test('metin olmayan kayıtlar atlanır, eksik alanlı kayıt varsayılanlarla okunur', () async {
-    final Wheel good = _wheel('iyi', 'Sağlam', DateTime.parse('2026-05-05T00:00:00Z'));
+    final Wheel good = _wheel(
+      'iyi',
+      'Sağlam',
+      DateTime.parse('2026-05-05T00:00:00Z'),
+    );
     final String raw = jsonEncode(<Object?>[
       'bu_string_olmamali',
       <String, dynamic>{'bozuk': true, 'segments': 'liste değil'},
@@ -101,7 +113,11 @@ void main() {
   });
 
   test('upsert var olan kaydı günceller, kopya oluşturmaz', () async {
-    final Wheel original = _wheel('a', 'A', DateTime.parse('2026-01-01T00:00:00Z'));
+    final Wheel original = _wheel(
+      'a',
+      'A',
+      DateTime.parse('2026-01-01T00:00:00Z'),
+    );
     await repository.saveAll(<Wheel>[original]);
 
     final List<Wheel> next = await repository.upsert(

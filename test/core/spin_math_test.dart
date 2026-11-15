@@ -38,7 +38,13 @@ void main() {
     });
 
     test('negatif ve çok büyük açılarda geçerli indeks döner', () {
-      for (final double rotation in <double>[-100, -0.001, 0, 999.9, 123456.7]) {
+      for (final double rotation in <double>[
+        -100,
+        -0.001,
+        0,
+        999.9,
+        123456.7,
+      ]) {
         for (int count = 1; count <= 24; count++) {
           final int index = SpinMath.indexAtRotation(rotation, count);
           expect(index, greaterThanOrEqualTo(0));
@@ -82,10 +88,7 @@ void main() {
         );
 
         expect(target, greaterThan(from));
-        expect(
-          target - from,
-          greaterThanOrEqualTo(turns * 2 * math.pi - 1e-9),
-        );
+        expect(target - from, greaterThanOrEqualTo(turns * 2 * math.pi - 1e-9));
         expect(SpinMath.indexAtRotation(target, count), winner);
       }
     });

@@ -12,10 +12,7 @@ Future<void> _pump(WidgetTester tester) async {
   await tester.pumpWidget(
     ProviderScope(
       overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
-      child: MaterialApp(
-        theme: AppTheme.dark(),
-        home: const LibraryScreen(),
-      ),
+      child: MaterialApp(theme: AppTheme.dark(), home: const LibraryScreen()),
     ),
   );
   await tester.pumpAndSettle();

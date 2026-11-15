@@ -7,7 +7,9 @@ void main() {
   });
 
   test('çark adları benzersizdir', () {
-    final Set<String> titles = kWheelLibrary.map((LibraryWheel w) => w.title).toSet();
+    final Set<String> titles = kWheelLibrary
+        .map((LibraryWheel w) => w.title)
+        .toSet();
     expect(titles.length, kWheelLibrary.length);
   });
 
@@ -25,14 +27,19 @@ void main() {
     }
   });
 
-  test('tüm kategoriler geçerli listede ve her kategoride en az 3 çark var', () {
-    expect(kWheelCategories.length, 12);
-    for (final LibraryWheel w in kWheelLibrary) {
-      expect(kWheelCategories, contains(w.category), reason: w.title);
-    }
-    for (final String cat in kWheelCategories) {
-      final int count = kWheelLibrary.where((LibraryWheel w) => w.category == cat).length;
-      expect(count, greaterThanOrEqualTo(3), reason: cat);
-    }
-  });
+  test(
+    'tüm kategoriler geçerli listede ve her kategoride en az 3 çark var',
+    () {
+      expect(kWheelCategories.length, 12);
+      for (final LibraryWheel w in kWheelLibrary) {
+        expect(kWheelCategories, contains(w.category), reason: w.title);
+      }
+      for (final String cat in kWheelCategories) {
+        final int count = kWheelLibrary
+            .where((LibraryWheel w) => w.category == cat)
+            .length;
+        expect(count, greaterThanOrEqualTo(3), reason: cat);
+      }
+    },
+  );
 }

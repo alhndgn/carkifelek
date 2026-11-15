@@ -39,7 +39,9 @@ void main() {
   });
 
   test('görünüm kimlikleri benzersiz ve etiketleri dolu', () {
-    final Set<String> ids = WheelStyle.values.map((WheelStyle s) => s.id).toSet();
+    final Set<String> ids = WheelStyle.values
+        .map((WheelStyle s) => s.id)
+        .toSet();
     expect(ids.length, WheelStyle.values.length);
     for (final WheelStyle s in WheelStyle.values) {
       expect(s.label.trim().isNotEmpty, isTrue);

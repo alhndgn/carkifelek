@@ -47,7 +47,9 @@ void main() {
   testWidgets('çark ekranı başlığı, çevir düğmesi ve seçenek sayısı görünür', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(appWith(_wheel(id: 'w1', segments: ['Ali', 'Doğan'])));
+    await tester.pumpWidget(
+      appWith(_wheel(id: 'w1', segments: ['Ali', 'Doğan'])),
+    );
 
     expect(find.text('Test Çarkı'), findsOneWidget);
     expect(find.text('ÇEVİR'), findsOneWidget);
@@ -113,7 +115,10 @@ void main() {
     await tester.tap(find.text('ÇEVİR'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Bu seçenek listeden çıkarıldı (eleme modu)'), findsOneWidget);
+    expect(
+      find.text('Bu seçenek listeden çıkarıldı (eleme modu)'),
+      findsOneWidget,
+    );
     expect(find.text('Kazananı listeden çıkar'), findsNothing);
 
     await tester.tap(find.text('Tamam'));
@@ -132,9 +137,7 @@ void main() {
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
-      appWith(
-        _wheel(id: 'w1', segments: <String>['Ali', 'Doğan', 'Mehmet']),
-      ),
+      appWith(_wheel(id: 'w1', segments: <String>['Ali', 'Doğan', 'Mehmet'])),
     );
 
     await tester.tap(find.text('ÇEVİR'));
@@ -146,33 +149,34 @@ void main() {
     expect(find.text('3 seçenek'), findsNothing);
   });
 
-  testWidgets('ayarlar: eleme modu açılınca kaydedilir ve çark ekranına yansır', (
-    WidgetTester tester,
-  ) async {
-    await tester.pumpWidget(
-      appWith(_wheel(id: 'w1', segments: <String>['Ali', 'Doğan'])),
-    );
+  testWidgets(
+    'ayarlar: eleme modu açılınca kaydedilir ve çark ekranına yansır',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        appWith(_wheel(id: 'w1', segments: <String>['Ali', 'Doğan'])),
+      );
 
-    expect(find.text('eleme modu'), findsNothing);
+      expect(find.text('eleme modu'), findsNothing);
 
-    await tester.tap(find.byIcon(Icons.tune));
-    await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.tune));
+      await tester.pumpAndSettle();
 
-    expect(find.text('Ayarlar'), findsOneWidget);
-    expect(find.text('Tik sesi'), findsOneWidget);
-    expect(find.text('Titreşim'), findsOneWidget);
-    expect(find.text('Dönüş süresi'), findsOneWidget);
+      expect(find.text('Ayarlar'), findsOneWidget);
+      expect(find.text('Tik sesi'), findsOneWidget);
+      expect(find.text('Titreşim'), findsOneWidget);
+      expect(find.text('Dönüş süresi'), findsOneWidget);
 
-    await tester.tap(find.text('Eleme modu'));
-    await tester.pumpAndSettle();
+      await tester.tap(find.text('Eleme modu'));
+      await tester.pumpAndSettle();
 
-    expect(storedJson(), contains('"eliminateMode":true'));
-    expect(find.text('eleme modu'), findsOneWidget);
+      expect(storedJson(), contains('"eliminateMode":true'));
+      expect(find.text('eleme modu'), findsOneWidget);
 
-    await tester.tap(find.text('Tik sesi'));
-    await tester.pumpAndSettle();
-    expect(storedJson(), contains('"soundOn":false'));
-  });
+      await tester.tap(find.text('Tik sesi'));
+      await tester.pumpAndSettle();
+      expect(storedJson(), contains('"soundOn":false'));
+    },
+  );
 
   testWidgets('ayarlar: dönüş süresi kaydırıcısı süreyi değiştirir', (
     WidgetTester tester,

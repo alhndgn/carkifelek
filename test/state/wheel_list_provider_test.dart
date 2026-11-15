@@ -41,20 +41,24 @@ void main() {
     expect(store.read(WheelRepository.storageKey), contains('Ne yesek?'));
   });
 
-  test('create boş başlıkta varsayılan ad kullanır, boş seçenekleri atar', () async {
-    await container.read(wheelListProvider.notifier).create(
-      title: '   ',
-      segments: const <String>[' ', 'Ali', ''],
-    );
+  test(
+    'create boş başlıkta varsayılan ad kullanır, boş seçenekleri atar',
+    () async {
+      await container
+          .read(wheelListProvider.notifier)
+          .create(title: '   ', segments: const <String>[' ', 'Ali', '']);
 
-    final Wheel wheel = container.read(wheelListProvider).single;
-    expect(wheel.title, 'Yeni Çark');
-    expect(wheel.segments, <String>['Ali']);
-    expect(wheel.canSpin, isFalse);
-  });
+      final Wheel wheel = container.read(wheelListProvider).single;
+      expect(wheel.title, 'Yeni Çark');
+      expect(wheel.segments, <String>['Ali']);
+      expect(wheel.canSpin, isFalse);
+    },
+  );
 
   test('rename başlığı değiştirir, boş başlığı yok sayar', () async {
-    final WheelListNotifier notifier = container.read(wheelListProvider.notifier);
+    final WheelListNotifier notifier = container.read(
+      wheelListProvider.notifier,
+    );
     await notifier.create(title: 'A', segments: const <String>['x', 'y']);
     final String id = container.read(wheelListProvider).single.id;
 
@@ -66,8 +70,13 @@ void main() {
   });
 
   test('duplicate aynı seçeneklerle yeni çark üretir', () async {
-    final WheelListNotifier notifier = container.read(wheelListProvider.notifier);
-    await notifier.create(title: 'Ne yesek?', segments: const <String>['Pizza', 'Kebap']);
+    final WheelListNotifier notifier = container.read(
+      wheelListProvider.notifier,
+    );
+    await notifier.create(
+      title: 'Ne yesek?',
+      segments: const <String>['Pizza', 'Kebap'],
+    );
     final Wheel original = container.read(wheelListProvider).single;
 
     await notifier.duplicate(original.id);
@@ -80,7 +89,9 @@ void main() {
   });
 
   test('remove çarkı siler', () async {
-    final WheelListNotifier notifier = container.read(wheelListProvider.notifier);
+    final WheelListNotifier notifier = container.read(
+      wheelListProvider.notifier,
+    );
     await notifier.create(title: 'A', segments: const <String>['x', 'y']);
     final String id = container.read(wheelListProvider).single.id;
 
@@ -91,20 +102,24 @@ void main() {
   });
 
   test('updateSegments boş metinleri temizler', () async {
-    final WheelListNotifier notifier = container.read(wheelListProvider.notifier);
+    final WheelListNotifier notifier = container.read(
+      wheelListProvider.notifier,
+    );
     await notifier.create(title: 'A', segments: const <String>['x', 'y']);
     final String id = container.read(wheelListProvider).single.id;
 
     await notifier.updateSegments(id, const <String>[' Ali ', '', 'Doğan']);
 
-    expect(
-      container.read(wheelListProvider).single.segments,
-      <String>['Ali', 'Doğan'],
-    );
+    expect(container.read(wheelListProvider).single.segments, <String>[
+      'Ali',
+      'Doğan',
+    ]);
   });
 
   test('updateSettings ayarları yazar', () async {
-    final WheelListNotifier notifier = container.read(wheelListProvider.notifier);
+    final WheelListNotifier notifier = container.read(
+      wheelListProvider.notifier,
+    );
     await notifier.create(title: 'A', segments: const <String>['x', 'y']);
     final String id = container.read(wheelListProvider).single.id;
 
@@ -123,7 +138,9 @@ void main() {
   });
 
   test('eliminateSegment kazananı listeden çıkarır', () async {
-    final WheelListNotifier notifier = container.read(wheelListProvider.notifier);
+    final WheelListNotifier notifier = container.read(
+      wheelListProvider.notifier,
+    );
     await notifier.create(
       title: 'Kim ısmarlayacak?',
       segments: const <String>['Ali', 'Doğan', 'Mehmet'],
@@ -132,14 +149,16 @@ void main() {
 
     await notifier.eliminateSegment(id, 'Doğan');
 
-    expect(
-      container.read(wheelListProvider).single.segments,
-      <String>['Ali', 'Mehmet'],
-    );
+    expect(container.read(wheelListProvider).single.segments, <String>[
+      'Ali',
+      'Mehmet',
+    ]);
   });
 
   test('eleme sonrası tek seçenek kalırsa çark kilitlenir', () async {
-    final WheelListNotifier notifier = container.read(wheelListProvider.notifier);
+    final WheelListNotifier notifier = container.read(
+      wheelListProvider.notifier,
+    );
     await notifier.create(title: 'A', segments: const <String>['Ali', 'Doğan']);
     final String id = container.read(wheelListProvider).single.id;
 
@@ -149,7 +168,9 @@ void main() {
   });
 
   test('olmayan seçeneği elemek listeyi bozmaz', () async {
-    final WheelListNotifier notifier = container.read(wheelListProvider.notifier);
+    final WheelListNotifier notifier = container.read(
+      wheelListProvider.notifier,
+    );
     await notifier.create(title: 'A', segments: const <String>['Ali', 'Doğan']);
     final String id = container.read(wheelListProvider).single.id;
 
@@ -159,13 +180,18 @@ void main() {
   });
 
   test('veriler yeni oturumda (yeni container) korunur', () async {
-    await container.read(wheelListProvider.notifier).create(
-      title: 'Hafta sonu ne yapalım?',
-      segments: const <String>['Parka gidelim', 'Yemek yiyelim'],
-    );
+    await container
+        .read(wheelListProvider.notifier)
+        .create(
+          title: 'Hafta sonu ne yapalım?',
+          segments: const <String>['Parka gidelim', 'Yemek yiyelim'],
+        );
 
     final ProviderContainer second = buildContainer();
 
-    expect(second.read(wheelListProvider).single.title, 'Hafta sonu ne yapalım?');
+    expect(
+      second.read(wheelListProvider).single.title,
+      'Hafta sonu ne yapalım?',
+    );
   });
 }
