@@ -1,7 +1,7 @@
 # Çarkıfelek — Google Play yayın adımları
 
-Paket: `com.teqstudio.carkifelek` · Sürüm: **1.2.0 (versionCode 3)** · minSdk 24 · targetSdk 36
-Yüklenecek dosya: **`store/carkifelek-1.2.0.aab`** (AAB — Play APK kabul etmez)
+Paket: `com.teqstudio.carkifelek` · Sürüm: **1.2.1 (versionCode 4)** · minSdk 24 · targetSdk 36
+Yüklenecek dosya: **`store/carkifelek-1.2.1.aab`** (AAB — Play APK kabul etmez)
 İmza: upload anahtarı (CN=Carkifelek) ✅ — debug imzalı değil
 
 ---
@@ -13,7 +13,7 @@ Yüklenecek dosya: **`store/carkifelek-1.2.0.aab`** (AAB — Play APK kabul etme
 | `icon-512.png` | Uygulama ikonu | 512×512, şeffaflık yok |
 | `feature-graphic.png` | Öne çıkan grafik | 1024×500, şeffaflık yok |
 | `phone-1..4.png` | Telefon ekran görüntüleri | 1080×1920 (9:16), 2–8 adet |
-| `carkifelek-1.2.0.aab` | Sürüm yükleme | İmzalı app bundle |
+| `carkifelek-1.2.1.aab` | Sürüm yükleme | İmzalı app bundle |
 
 Kullanılacak metinler:
 - **Uygulama adı:** `Çarkıfelek`
@@ -92,7 +92,7 @@ Bu uygulama hiçbir kişisel veri toplamaz, sunucuya veri göndermez ve reklam g
 
 ## 6) Sürüm yükleme
 
-Test → İç test → **Yeni sürüm oluştur** → `store/carkifelek-1.2.0.aab` dosyasını yükle.
+Test → İç test → **Yeni sürüm oluştur** → `store/carkifelek-1.2.1.aab` dosyasını yükle.
 
 Yeni sürümlerde:
 - `pubspec.yaml` içindeki `version:` **artmalı** (örn. `1.3.0+4` → versionCode 4).

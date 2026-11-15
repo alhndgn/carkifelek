@@ -42,7 +42,6 @@ class _CarkifelekAppState extends ConsumerState<CarkifelekApp> {
                 child: TeqSplash(
                   appName: 'Çarkıfelek',
                   tagline: 'Kararsız kaldığın her an yanında.\nÇevir, kararı şansa bırak.',
-                  stats: const <String>['66 hazır çark', '4 görünüm', '6 tema'],
                   mark: (double rotation, double size) =>
                       WheelMark(size: size, rotation: rotation),
                   // Tasarım incelemesi: web'de ?splash=hold ekranda tutar.
