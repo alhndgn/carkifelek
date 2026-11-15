@@ -192,6 +192,10 @@ class SpinWheelState extends State<SpinWheel>
       WheelStyle.donut => (0.42, 0.92),
       WheelStyle.target => (0.30, 0.82),
       WheelStyle.needle => (0.32, 0.86),
+      WheelStyle.petal => (0.44, 0.92),
+      WheelStyle.star => (0.40, 0.90),
+      WheelStyle.pinwheel => (0.40, 0.90),
+      WheelStyle.segments => (0.38, 0.88),
     };
     final double fontSize = baseSize * sizeFactor;
     final double maxWidth = math.max(24, radius * widthFactor);
@@ -413,6 +417,10 @@ class WheelPainter extends CustomPainter {
     WheelStyle.donut => 0.81,
     WheelStyle.target => 0.89,
     WheelStyle.needle => 0.845,
+    WheelStyle.petal => 0.58,
+    WheelStyle.star => 0.56,
+    WheelStyle.pinwheel => 0.54,
+    WheelStyle.segments => 0.80,
   };
 
   @override
@@ -434,11 +442,31 @@ class WheelPainter extends CustomPainter {
         _paintTarget(canvas, center, radius);
       case WheelStyle.needle:
         _paintNeedle(canvas, center, radius);
+      case WheelStyle.petal:
+        _paintPetal(canvas, center, radius);
+      case WheelStyle.star:
+        _paintStar(canvas, center, radius);
+      case WheelStyle.pinwheel:
+        _paintPinwheel(canvas, center, radius);
+      case WheelStyle.segments:
+        _paintSegments(canvas, center, radius);
     }
 
-    _paintRim(canvas, center, radius);
+    // Dairesel silueti olmayan görünümlerde çember çerçeve çizilmez.
+    if (_hasRoundSilhouette) _paintRim(canvas, center, radius);
     _paintLabels(canvas, center, radius);
   }
+
+  bool get _hasRoundSilhouette => switch (style) {
+    WheelStyle.petal || WheelStyle.star || WheelStyle.pinwheel => false,
+    _ => true,
+  };
+
+  /// Merkezden [radius] uzaklıkta [angle] açısındaki nokta.
+  Offset _polar(Offset center, double angle, double radius) => Offset(
+    center.dx + math.cos(angle) * radius,
+    center.dy + math.sin(angle) * radius,
+  );
 
   double get _sweep => SpinMath.sweep(segmentCount);
 
@@ -636,6 +664,169 @@ class WheelPainter extends CustomPainter {
           ..color = kSurfaceHigh,
       );
     }
+  }
+
+  /// Çiçek: merkezden dışa doğru yuvarlak taç yaprakları.
+  void _paintPetal(Canvas canvas, Offset center, double radius) {
+    final double inner = radius * 0.20;
+    final Rect innerRect = Rect.fromCircle(center: center, radius: inner);
+
+    for (int i = 0; i < segmentCount; i++) {
+      final double a0 = _startOf(i);
+      final double a1 = a0 + _sweep;
+      final double mid = a0 + _sweep / 2;
+
+      final Offset corner = _polar(center, a1, inner);
+      final Offset tip = _polar(center, mid, radius);
+      final Offset left = _polar(center, a0 + _sweep * 0.16, radius * 0.92);
+      final Offset right = _polar(center, a1 - _sweep * 0.16, radius * 0.92);
+
+      final Path path = Path()
+        ..moveTo(corner.dx, corner.dy)
+        ..arcTo(innerRect, a1, -_sweep, false)
+        ..quadraticBezierTo(left.dx, left.dy, tip.dx, tip.dy)
+        ..quadraticBezierTo(right.dx, right.dy, corner.dx, corner.dy)
+        ..close();
+
+      canvas.drawPath(
+        path,
+        Paint()
+          ..isAntiAlias = true
+          ..color = paletteColorAt(i),
+      );
+      canvas.drawPath(
+        path,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.2
+          ..color = _divider,
+      );
+    }
+
+    canvas.drawCircle(center, inner, Paint()..color = kSurfaceHigh);
+    canvas.drawCircle(
+      center,
+      inner,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2
+        ..color = kBorder,
+    );
+  }
+
+  /// Yıldız: her dilim sivri bir uç, arada çukur.
+  void _paintStar(Canvas canvas, Offset center, double radius) {
+    final double valley = radius * 0.44;
+    final double inner = radius * 0.15;
+    final Rect innerRect = Rect.fromCircle(center: center, radius: inner);
+
+    for (int i = 0; i < segmentCount; i++) {
+      final double a0 = _startOf(i);
+      final double a1 = a0 + _sweep;
+
+      final Offset trail = _polar(center, a1, valley);
+      final Offset lead = _polar(center, a0, valley);
+      final Offset tip = _polar(center, a0 + _sweep / 2, radius);
+
+      final Path path = Path()
+        ..moveTo(trail.dx, trail.dy)
+        ..arcTo(innerRect, a1, -_sweep, false)
+        ..lineTo(lead.dx, lead.dy)
+        ..lineTo(tip.dx, tip.dy)
+        ..close();
+
+      canvas.drawPath(
+        path,
+        Paint()
+          ..isAntiAlias = true
+          ..color = paletteColorAt(i),
+      );
+      canvas.drawPath(
+        path,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.2
+          ..color = _divider,
+      );
+    }
+  }
+
+  /// Rüzgâr gülü: arka kenarı kavisli kanatlar.
+  void _paintPinwheel(Canvas canvas, Offset center, double radius) {
+    canvas.drawCircle(center, radius * 0.99, Paint()..color = kSurface);
+
+    final double inner = radius * 0.24;
+    final Rect outerRect = Rect.fromCircle(center: center, radius: radius);
+
+    for (int i = 0; i < segmentCount; i++) {
+      final double a0 = _startOf(i);
+      final double a1 = a0 + _sweep;
+
+      final Offset root = _polar(center, a0, radius);
+      final Offset hub = _polar(center, a0, inner);
+      final Offset control = _polar(center, a1 - _sweep * 0.06, radius * 0.50);
+
+      final Path path = Path()
+        ..moveTo(root.dx, root.dy)
+        ..arcTo(outerRect, a0, _sweep * 0.84, false)
+        ..quadraticBezierTo(control.dx, control.dy, hub.dx, hub.dy)
+        ..close();
+
+      canvas.drawPath(
+        path,
+        Paint()
+          ..isAntiAlias = true
+          ..color = paletteColorAt(i),
+      );
+      canvas.drawPath(
+        path,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.2
+          ..color = _divider,
+      );
+    }
+
+    canvas.drawCircle(center, inner * 0.92, Paint()..color = kSurfaceHigh);
+    canvas.drawCircle(
+      center,
+      inner * 0.92,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2
+        ..color = kBorder,
+    );
+  }
+
+  /// Bölmeli: aralıklı halka dilimleri.
+  void _paintSegments(Canvas canvas, Offset center, double radius) {
+    final double inner = radius * 0.56;
+    final double gap = math.min(_sweep * 0.16, 0.055);
+
+    for (int i = 0; i < segmentCount; i++) {
+      final Path path = _annulus(
+        center,
+        radius,
+        inner,
+        _startOf(i) + gap / 2,
+        _sweep - gap,
+      );
+      canvas.drawPath(
+        path,
+        Paint()
+          ..isAntiAlias = true
+          ..color = paletteColorAt(i),
+      );
+      canvas.drawPath(
+        path,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.2
+          ..color = _divider,
+      );
+    }
+
+    canvas.drawCircle(center, inner - 1, Paint()..color = kSurface);
   }
 
   void _paintRim(Canvas canvas, Offset center, double radius) {

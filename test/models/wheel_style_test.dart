@@ -47,6 +47,6 @@ void main() {
       expect(s.label.trim().isNotEmpty, isTrue);
       expect(s.description.trim().isNotEmpty, isTrue);
     }
-    expect(WheelStyle.values.length, 4);
+    expect(WheelStyle.values.length, 8);
   });
 }

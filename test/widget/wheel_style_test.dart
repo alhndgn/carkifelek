@@ -32,7 +32,7 @@ void main() {
 
   String storedJson() => store.read(WheelRepository.storageKey) ?? '';
 
-  testWidgets('ayarlarda dört çark görünümü listelenir', (
+  testWidgets('ayarlarda tüm çark görünümleri listelenir', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
